@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">task2021</string>
+    <string name="streak">Streak</string>
+    <string name="home">Daily</string>
+    <string name="surprise">Surprise</string>
+    <string name="settings">Settings</string>
+</resources>
