@@ -60,6 +60,7 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>) {
 }
 
 
+
 @Composable
 fun componentScreen(currentRoute : String){
     Text(currentRoute .repeat(50), maxLines = 3, textAlign = TextAlign.Center )

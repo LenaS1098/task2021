@@ -58,7 +58,9 @@ fun calendarStreak(
     selectionSet: MutableStateFlow<Set<CalposeDate>>
 ) {
     val selections = selectionSet.collectAsState().value
-    Column{
+    Column(modifier = Modifier
+        .padding(vertical = 25.dp)
+    ){
         Calpose(month = monthFlow.collectAsState().value, actions = CalposeActions(
             onClickedPreviousMonth = {
                 monthFlow.value = monthFlow.value.minusMonths(1)
