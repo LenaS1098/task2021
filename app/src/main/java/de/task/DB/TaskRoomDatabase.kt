@@ -21,10 +21,7 @@ public abstract class TaskRoomDatabase: RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    var wordDao = database.taskDao()
 
-
-                    suspend fun populateDatabase(taskDao: TaskDao) {
 
                         var taskDao = database.taskDao()
 
@@ -67,6 +64,6 @@ public abstract class TaskRoomDatabase: RoomDatabase() {
             }
         }
     }
-}
+
 
 
