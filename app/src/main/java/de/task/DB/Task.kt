@@ -9,6 +9,6 @@ data class Task(@PrimaryKey(autoGenerate = true) val id: Int,
                 val name: String,
                 val description: String,
                 val duration: Int,
-                val categoryId: Integer,
+                val categoryId: Int,
                 val pictureId: Int) {
 }
