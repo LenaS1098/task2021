@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import de.task.ui.theme.Task2021Theme
 import androidx.compose.material.BottomNavigationItem as BottomNavigationItem1
+import de.task.screens.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun bottomNavigation(navController: NavHostController, items: List<Screen>) {
+
     Scaffold(bottomBar = {
         BottomNavigation {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -52,7 +54,7 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>) {
             composable(Screen.Daily.route){ componentScreen(currentRoute = Screen.Daily.route)}
             composable(Screen.Streak.route){ componentScreen(currentRoute = Screen.Streak.route)}
             composable(Screen.Surprise.route){ componentScreen(currentRoute = Screen.Surprise.route)}
-            composable(Screen.Settings.route){ componentScreen(currentRoute = Screen.Settings.route)}
+            composable(Screen.Settings.route){ settingScreen()}
         })
     }
 }
