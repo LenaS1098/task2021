@@ -53,7 +53,7 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>) {
         NavHost(navController = navController, startDestination = Screen.Daily.route, builder = {
             composable(Screen.Daily.route){ componentScreen(currentRoute = Screen.Daily.route)}
             composable(Screen.Streak.route){ streak()}
-            composable(Screen.Surprise.route){ componentScreen(currentRoute = Screen.Surprise.route)}
+            composable(Screen.Surprise.route){ surprise()}
             composable(Screen.Settings.route){ componentScreen(currentRoute = Screen.Settings.route)}
         })
     }
