@@ -1,36 +1,90 @@
 package de.task
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
 import de.task.ui.theme.Task2021Theme
 import androidx.compose.material.BottomNavigationItem as BottomNavigationItem1
 import de.task.screens.*
 
+import android.content.Intent
+import android.util.Log
+import com.google.android.gms.common.api.ApiException
+
+
+
+
+
+
+
+
 class MainActivity : ComponentActivity() {
+
+    private val RC_SIGN_IN: Int = 0
+    private var mGoogleSignInClient: GoogleSignInClient? = null
+     private var currenState = LoginState.NONE
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createRequest()
+
         setContent {
             Task2021Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting()
+                    //ggf Nullpointer
+                    Greeting(mGoogleSignInClient!!, this)
                 }
             }
         }
+
+
     }
+
+
+    /* If you need to detect changes to a user's auth state that happen outside your app,
+    such as access token or ID token revocation, or to perform cross-device sign-in,
+    you might also call GoogleSignInClient.silentSignIn when your app starts.*/
+
+    override fun onStart() {
+        super.onStart()
+        //Check ob User schon eingeloggt ist, wenn nein = null
+        val account : GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
+        //updateUI(account)
+    }
+
+    fun createRequest(){
+        val gso : GoogleSignInOptions= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso)
+
+        if(GoogleSignIn.getLastSignedInAccount(this) != null){
+            currenState = LoginState.LOGGED
+        }
+    }
+
 }
 
+
+
 @Composable
-fun bottomNavigation(navController: NavHostController, items: List<Screen>) {
+fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context) {
 
     Scaffold(bottomBar = {
         BottomNavigation {
@@ -54,7 +108,7 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>) {
             composable(Screen.Daily.route){ componentScreen(currentRoute = Screen.Daily.route)}
             composable(Screen.Streak.route){ componentScreen(currentRoute = Screen.Streak.route)}
             composable(Screen.Surprise.route){ componentScreen(currentRoute = Screen.Surprise.route)}
-            composable(Screen.Settings.route){ settingScreen()}
+            composable(Screen.Settings.route){ settingScreen(mGoogleSignInClient, context) }
         })
     }
 }
@@ -65,7 +119,7 @@ fun componentScreen(currentRoute : String){
     Text(currentRoute .repeat(50), maxLines = 3, textAlign = TextAlign.Center )
 }
 @Composable
-fun Greeting() {
+fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context) {
     val items = listOf<Screen>(
         Screen.Daily,
         Screen.Streak,
@@ -73,18 +127,18 @@ fun Greeting() {
         Screen.Settings
     )
     val navController = rememberNavController()
-    bottomNavigation(navController = navController, items)
+    bottomNavigation(navController = navController, items, mGoogleSignInClient, context)
 }
 
-@Preview(showBackground = true)
+
 @Composable
-fun DefaultPreview() {
+fun DefaultPreview(mGoogleSignInClient: GoogleSignInClient, context: Context) {
     Task2021Theme {
         bottomNavigation(navController =  rememberNavController(), items = listOf<Screen>(
             Screen.Daily,
             Screen.Streak,
             Screen.Surprise,
             Screen.Settings
-        ))
+        ), mGoogleSignInClient, context)
     }
 }
