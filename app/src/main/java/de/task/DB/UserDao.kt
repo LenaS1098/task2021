@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user ORDER BY user.id ASC")
-    fun getAllTasks(): Flow<List<Task>>
+    fun getAllUser(): List<User>
 
     @Insert(onConflict =  OnConflictStrategy.IGNORE)
     fun insert(user: User)

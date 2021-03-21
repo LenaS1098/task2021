@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
     @Query("SELECT * FROM task ORDER BY Task.id ASC")
-    fun getAllTasks(): Flow<List<Task>>
+    fun getAllTasks(): List<Task>
 
     @Query("SELECT Task.name FROM task WHERE Task.id = 1")
-    fun getFirstTaskName(): Flow<String>
+    fun getFirstTaskName(): String
 
     @Insert(onConflict =  OnConflictStrategy.IGNORE)
     fun insert(task:Task)

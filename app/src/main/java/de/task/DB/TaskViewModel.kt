@@ -4,9 +4,10 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
-    val allTasks: LiveData<List<Task>> = repository.allTask.asLiveData()
+    val allTasks: List<Task> = repository.allTask
 
-    val firstTask: LiveData<String> = repository.firstTask.asLiveData()
+
+    val firstTask: String = repository.firstTask
 
     fun insert(task: Task) = viewModelScope.launch {
         repository.insert(task)

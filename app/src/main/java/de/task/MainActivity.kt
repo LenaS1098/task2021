@@ -28,24 +28,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
 
-        var firstname: String? = taskViewModel.firstTask.value
-        var listOfTask: List<Task>? = taskViewModel.allTasks.value
-
-
-        taskViewModel.allTasks.observe(this, Observer { listOfTask = taskViewModel.allTasks.value
-        })
+        var firstname: String = taskViewModel.firstTask
+        var listOfTask: List<Task> = taskViewModel.allTasks
 
 
 
 
-        listOfTask?.forEach { Log.e("DatabaseList?","diese Task heißt " + it.name) }
-            ?: Log.e("DatabaseList?","leer")
+
+        listOfTask.forEach { Log.e("DatabaseList?","diese Task heißt " + it.name) }
 
 
-        if (firstname != null) {
-            Log.e("Datenbank?",firstname)
-        }
-        else{Log.e("Datenbank?","Data is missing")}
+
+        Log.e("Datenbank?",firstname)
+
+
         
         setContent {
             Task2021Theme {
@@ -57,22 +53,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    override fun onStart() {
-        super.onStart()
-        var firstname: String? = taskViewModel.firstTask.value
-        var listOfTask: List<Task>? = taskViewModel.allTasks.value
-
-        listOfTask?.forEach { Log.e("DatabaseList?", "diese Task heißt " + it.name) }
-            ?: Log.e("DatabaseList?", "leer")
-
-
-        if (firstname != null) {
-            Log.e("Datenbank?", firstname)
-        } else {
-            Log.e("Datenbank?", "Data is missing")
-        }
-    }
-
 }
 
     @Composable

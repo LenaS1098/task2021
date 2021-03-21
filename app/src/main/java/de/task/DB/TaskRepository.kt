@@ -4,9 +4,9 @@ import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
 
 class TaskRepository(private val taskDao: TaskDao) {
-    val allTask: Flow<List<Task>> = taskDao.getAllTasks()
+    val allTask: List<Task> = taskDao.getAllTasks()
 
-    val firstTask: Flow<String> = taskDao.getFirstTaskName()
+    val firstTask: String = taskDao.getFirstTaskName()
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

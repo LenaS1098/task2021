@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CategoryDao {
     @Query("SELECT * FROM category ORDER BY Category.categoryId ASC")
-    fun getAllTasks(): Flow<List<Task>>
+    fun getAllCategory(): List<Category>
 
     @Insert(onConflict =  OnConflictStrategy.IGNORE)
     fun insert(category: Category)

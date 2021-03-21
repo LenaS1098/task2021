@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 public abstract class TaskRoomDatabase: RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
+    abstract fun categoryDao(): CategoryDao
+    abstract fun userDao(): UserDao
 
 
     private class WordDatabaseCallback(
