@@ -13,6 +13,7 @@ public abstract class TaskRoomDatabase: RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
 
+
     private class WordDatabaseCallback(
         private val scope: CoroutineScope
     ) : RoomDatabase.Callback() {
@@ -53,9 +54,10 @@ public abstract class TaskRoomDatabase: RoomDatabase() {
                     val instance = Room.databaseBuilder(
                         context.applicationContext,
                         TaskRoomDatabase::class.java,
-                        "word_database"
+                        "task_database"
                     )
                         .addCallback(WordDatabaseCallback(scope))
+                        .allowMainThreadQueries()
                         .build()
                     INSTANCE = instance
                     // return instance
