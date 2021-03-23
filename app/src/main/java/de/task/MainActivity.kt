@@ -2,14 +2,18 @@ package de.task
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Observer
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -17,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
+import de.task.DB.*
 import de.task.ui.theme.Task2021Theme
 import androidx.compose.material.BottomNavigationItem as BottomNavigationItem1
 import de.task.screens.*
@@ -39,9 +44,31 @@ class MainActivity : ComponentActivity() {
      private var currenState = LoginState.NONE
 
 
+
+
+    private val taskViewModel: TaskViewModel by viewModels {
+        TaskViewModelFactory((application as RoomApplication).repository)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createRequest()
+
+
+
+        var firstname: String = taskViewModel.firstTask
+        var listOfTask: List<Task> = taskViewModel.allTasks
+
+
+
+
+
+        listOfTask.forEach { Log.e("DatabaseList?","diese Task heißt " + it.name) }
+
+
+
+        Log.e("Datenbank?",firstname)
+
+
 
         setContent {
             Task2021Theme {
@@ -52,8 +79,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-
     }
 
 
@@ -80,8 +105,6 @@ class MainActivity : ComponentActivity() {
     }
 
 }
-
-
 
 @Composable
 fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context) {
