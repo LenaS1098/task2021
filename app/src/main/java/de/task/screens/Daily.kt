@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
@@ -35,6 +36,7 @@ import de.task.R
 
 @Composable
 fun TaskCard(task: Task){
+
     val clicked = remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
@@ -69,7 +71,6 @@ fun TaskCard(task: Task){
                 if(clicked.value)
                     Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
             }
-
         }
     }
 }
@@ -78,7 +79,7 @@ fun TaskCard(task: Task){
 fun Header(){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .background(Color.White)
+        .background(MaterialTheme.colors.background)
     ) {
 
         Row(modifier = Modifier

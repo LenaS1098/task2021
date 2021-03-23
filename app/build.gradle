@@ -53,6 +53,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     //Coik fuer Profilbild Anzeige
     implementation "com.google.accompanist:accompanist-coil:0.6.2"
+    // Animations
+    implementation "androidx.compose.animation:animation:1.0.0-beta02"
+
+
 
 
     //Grundimports
