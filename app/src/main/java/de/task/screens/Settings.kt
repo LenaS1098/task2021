@@ -6,7 +6,6 @@ import android.content.Context
 import android.util.Log
 import androidx.activity.compose.registerForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -30,11 +29,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 
 
+
+
 enum class LoginState {
     LOGGED, LOGGING, NONE
 }
-
-
 
 @Composable
 fun settingScreen(mGoogleSignInClient: GoogleSignInClient, context: Context) {
@@ -45,8 +44,11 @@ fun settingScreen(mGoogleSignInClient: GoogleSignInClient, context: Context) {
         currentState = LoginState.LOGGED
     }
 
+
     //muss für jede einstellug einzeln sein; am besten extra klasse (when? Viele Variablen?)
     val checkedState = remember { mutableStateOf(false) }
+
+
 
     var loginState by rememberSaveable{ mutableStateOf(currentState)}
 
@@ -98,13 +100,13 @@ fun settingScreen(mGoogleSignInClient: GoogleSignInClient, context: Context) {
                             text = "User : " + currentAccount!!.displayName,
                             Modifier.padding(top = 8.dp)
                         )
-                        /* Missing Internet Permission
+
 
                         CoilImage(currentAccount!!.photoUrl.toString(),"eins beschreibung", loading = {
                             Box(Modifier.matchParentSize()) {
                                 CircularProgressIndicator(Modifier.align(Alignment.Center))
                             }
-                        })*/
+                        })
                     }
                 }
                 Row(

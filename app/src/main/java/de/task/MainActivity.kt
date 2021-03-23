@@ -2,39 +2,27 @@ package de.task
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.Observer
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.tasks.Task
 import de.task.DB.*
 import de.task.ui.theme.Task2021Theme
 import androidx.compose.material.BottomNavigationItem as BottomNavigationItem1
 import de.task.screens.*
 
-import android.content.Intent
+
 import android.util.Log
-import com.google.android.gms.common.api.ApiException
-
-
-
-
-
-
 
 
 class MainActivity : ComponentActivity() {
@@ -44,8 +32,6 @@ class MainActivity : ComponentActivity() {
      private var currenState = LoginState.NONE
 
 
-
-
     private val taskViewModel: TaskViewModel by viewModels {
         TaskViewModelFactory((application as RoomApplication).repository)
     }
@@ -53,29 +39,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         createRequest()
 
-
-
-        var firstname: String = taskViewModel.firstTask
-        var listOfTask: List<Task> = taskViewModel.allTasks
-
-
-
-
+        val firstname: String = taskViewModel.firstTask
+        val listOfTask: List<Task> = taskViewModel.allTasks
 
         listOfTask.forEach { Log.e("DatabaseList?","diese Task heißt " + it.name) }
 
-
-
-        Log.e("Datenbank?",firstname)
-
-
+       Log.e("Datenbank?",firstname)
 
         setContent {
             Task2021Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     //ggf Nullpointer
-                    Greeting(mGoogleSignInClient!!, this)
+                    Greeting(mGoogleSignInClient!!, this, listOfTask)
                 }
             }
         }
@@ -103,11 +79,10 @@ class MainActivity : ComponentActivity() {
             currenState = LoginState.LOGGED
         }
     }
-
 }
 
 @Composable
-fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context) {
+fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
 
     Scaffold(bottomBar = {
         BottomNavigation {
@@ -128,7 +103,7 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
         }
     }) {
         NavHost(navController = navController, startDestination = Screen.Daily.route, builder = {
-            composable(Screen.Daily.route){ componentScreen(currentRoute = Screen.Daily.route)}
+            composable(Screen.Daily.route){ DummyCalendar(listOfTask)}
             composable(Screen.Streak.route){ componentScreen(currentRoute = Screen.Streak.route)}
             composable(Screen.Surprise.route){ componentScreen(currentRoute = Screen.Surprise.route)}
             composable(Screen.Settings.route){ settingScreen(mGoogleSignInClient, context) }
@@ -142,7 +117,7 @@ fun componentScreen(currentRoute : String){
     Text(currentRoute .repeat(50), maxLines = 3, textAlign = TextAlign.Center )
 }
 @Composable
-fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context) {
+fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
     val items = listOf<Screen>(
         Screen.Daily,
         Screen.Streak,
@@ -150,18 +125,18 @@ fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context) {
         Screen.Settings
     )
     val navController = rememberNavController()
-    bottomNavigation(navController = navController, items, mGoogleSignInClient, context)
+    bottomNavigation(navController = navController, items, mGoogleSignInClient, context, listOfTask)
 }
 
 
 @Composable
-fun DefaultPreview(mGoogleSignInClient: GoogleSignInClient, context: Context) {
+fun DefaultPreview(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
     Task2021Theme {
         bottomNavigation(navController =  rememberNavController(), items = listOf<Screen>(
             Screen.Daily,
             Screen.Streak,
             Screen.Surprise,
             Screen.Settings
-        ), mGoogleSignInClient, context)
+        ), mGoogleSignInClient, context, listOfTask)
     }
 }
