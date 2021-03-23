@@ -24,6 +24,7 @@ import de.task.screens.*
 
 
 import android.util.Log
+import de.task.DB.Task
 import java.sql.Date
 import java.sql.Timestamp
 import java.time.LocalDate
@@ -70,7 +71,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-            taskViewModel.insert(chosenCompletedTask)
+            //taskViewModel.insert(chosenCompletedTask)
         }
         val listOfCompletedTask: List<CompletedTask> = taskViewModel.allCompletedTask
 
@@ -138,13 +139,11 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
         }
     }) {
         NavHost(navController = navController, startDestination = Screen.Daily.route, builder = {
-            composable(Screen.Daily.route){ componentScreen(currentRoute = Screen.Daily.route)}
+
             composable(Screen.Streak.route){ streak()}
             composable(Screen.Surprise.route){ surprise()}
-            composable(Screen.Settings.route){ componentScreen(currentRoute = Screen.Settings.route)}
             composable(Screen.Daily.route){ DummyCalendar(listOfTask)}
-            composable(Screen.Streak.route){ componentScreen(currentRoute = Screen.Streak.route)}
-            composable(Screen.Surprise.route){ componentScreen(currentRoute = Screen.Surprise.route)}
+
             composable(Screen.Settings.route){ settingScreen(mGoogleSignInClient, context) }
         })
     }
