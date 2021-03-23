@@ -15,6 +15,9 @@ interface UserDao {
     @Insert(onConflict =  OnConflictStrategy.IGNORE)
     fun insert(user: User)
 
+    @Query("SELECT * FROM user Where user.email = :searchedMail")
+    fun getSpecificUser(searchedMail: String?): User
+
     @Query("DELETE FROM User")
     fun deleteAll()
 

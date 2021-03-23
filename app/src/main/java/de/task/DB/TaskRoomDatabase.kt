@@ -7,13 +7,16 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.sql.Date
+import java.sql.Types.NULL
 
-@Database(entities = arrayOf(Task::class,Category::class,User::class),version = 1,exportSchema =false)
+@Database(entities = arrayOf(Task::class,Category::class,User::class,CompletedTask::class),version = 1,exportSchema =false)
 public abstract class TaskRoomDatabase: RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
     abstract fun categoryDao(): CategoryDao
     abstract fun userDao(): UserDao
+    abstract fun completedTaskDao(): CompletedTaskDao
 
 
     private class WordDatabaseCallback(
@@ -27,56 +30,65 @@ public abstract class TaskRoomDatabase: RoomDatabase() {
 
 
                         var taskDao = database.taskDao()
+                        var userDao = database.userDao()
 
                         // Delete all content here.
                         taskDao.deleteAll()
+                        userDao.deleteAll()
 
-                        // Add sample words.
-                        var task = Task(0, "Liegestütze", "Mache 15 Liegestütze! Wenn du keine Kraft hast, mach sie Gegen eine Wand. Nächstes mal gegen einen Tisch, dann auf den Knien.", 5, 1, 1)
-                        taskDao.insert(task)
-                        task = Task(0, "Situps", "Mache 15 Situps", 5, 1, 2)
-                        taskDao.insert(task)
-                        task = Task(0, "Joggen", "Welchen Park kennst du noch nicht? Geh .. Jogg los und enrkunde ihn", 40, 1, 3)
-                        taskDao.insert(task)
-                        task = Task(0, "Klimmzüge", "Nur so viele du kannst!", 5, 1, 4)
-                        taskDao.insert(task)
-                        task = Task(0, "Seilspringen", "Versuche in einer Minute so viele Seilsprünge wie du kannst", 1, 1, 5)
-                        taskDao.insert(task)
-                        task = Task(0, "Fahrrad fahren", "Fahr mal ne Runde mit dem Fahrrad", 60, 1, 17)
-                        taskDao.insert(task)
+                        //alle basisuser
+                        var user = User(0, "Max", "task.testuser01@gmail.com")
+                        userDao.insert(user)
 
 
 
-
-                        task = Task(0, "Sprache lernen", "Der Appstore bietet viele Möglichkeiten, um eine neue Sprache zu lernen. Nehm dir dochmal die 5 Minuten, die du sonst nie findest", 5, 2, 6)
+                        // alle basistasks
+                        var task = Task(0, "Liegestütze", "Mache 15 Liegestütze! Wenn du keine Kraft hast, mach sie Gegen eine Wand. Nächstes mal gegen einen Tisch, dann auf den Knien.", 5, 1, 1,null,null)
                         taskDao.insert(task)
-                        task = Task(0, "Pflanzen", "Besorg dir eine Zimmerpflanze oder kümmer dich um bereits vorhandene", 5, 2, 7)
+                        task = Task(0, "Situps", "Mache 15 Situps", 5, 1, 2,null,null)
                         taskDao.insert(task)
-
-                        task = Task(0, "Yoga", "Finde deine Innere Mitte, und suche dir eine Yoga Übung", 20, 3, 8)
+                        task = Task(0, "Joggen", "Welchen Park kennst du noch nicht? Geh .. Jogg los und enrkunde ihn", 40, 1, 3,null,null)
                         taskDao.insert(task)
-                        task = Task(0, "Meditation", "Suche dir eine Meditationsübung und finde etwas innere Ruhe ", 20, 3, 9)
+                        task = Task(0, "Klimmzüge", "Nur so viele du kannst!", 5, 1, 4,null,null)
                         taskDao.insert(task)
-                        task = Task(0, "Lesen", "Such dir ein Buch und lese ein bisschen", 30, 3, 10)
+                        task = Task(0, "Seilspringen", "Versuche in einer Minute so viele Seilsprünge wie du kannst", 1, 1, 5,null,null)
                         taskDao.insert(task)
-                        task = Task(0, "Spazieren", "Beweg dich ein bisschen, aber denk an Social <distancing", 40, 3, 11)
-                        taskDao.insert(task)
-                        task = Task(0, "Malen", "Lass deiner Kreativität freien lauf", 20, 3, 12)
+                        task = Task(0, "Fahrrad fahren", "Fahr mal ne Runde mit dem Fahrrad", 60, 1, 17,null,null)
                         taskDao.insert(task)
 
-                        task = Task(0, "Staubsaugen", "Was getan werden muss, muss getan werden", 40, 4, 13)
+
+
+
+                        task = Task(0, "Sprache lernen", "Der Appstore bietet viele Möglichkeiten, um eine neue Sprache zu lernen. Nehm dir dochmal die 5 Minuten, die du sonst nie findest", 5, 2, 6,
+                            null,null)
                         taskDao.insert(task)
-                        task = Task(0, "Boden Wischen", "Was getan werden muss, muss getan werden", 40, 4, 14)
-                        taskDao.insert(task)
-                        task = Task(0, "Einkauf", "Fülle den Kühlschrank wieder auf", 120, 4, 15)
-                        taskDao.insert(task)
-                        task = Task(0, "Emails beantworten", "Nimm dir Zeit, deine Mails zu beantworten oder Termine zu buchen", 40, 4, 16)
+                        task = Task(0, "Pflanzen", "Besorg dir eine Zimmerpflanze oder kümmer dich um bereits vorhandene", 5, 2, 7,null,null)
                         taskDao.insert(task)
 
-                        task = Task(0, "Kuchen backen", "Ob für dich, zum Verschenken oder zum Teilen! Such dir ein neues Rezept auf kochchef.io aus und backe diesen Kuchen!", 60, 5, 18)
+                        task = Task(0, "Yoga", "Finde deine Innere Mitte, und suche dir eine Yoga Übung", 20, 3, 8,null,null)
+                        taskDao.insert(task)
+                        task = Task(0, "Meditation", "Suche dir eine Meditationsübung und finde etwas innere Ruhe ", 20, 3, 9,null,null)
+                        taskDao.insert(task)
+                        task = Task(0, "Lesen", "Such dir ein Buch und lese ein bisschen", 30, 3, 10,null,null)
+                        taskDao.insert(task)
+                        task = Task(0, "Spazieren", "Beweg dich ein bisschen, aber denk an Social <distancing", 40, 3, 11,null,null)
+                        taskDao.insert(task)
+                        task = Task(0, "Malen", "Lass deiner Kreativität freien lauf", 20, 3, 12,null,null)
                         taskDao.insert(task)
 
-                        task = Task(0, "English Breakfast", "2 Eier, Speck, gebackene Dosenbohnen & Toast. Easy und schnell!", 15, 5, 19)
+                        task = Task(0, "Staubsaugen", "Was getan werden muss, muss getan werden", 40, 4, 13 ,null,null)
+                        taskDao.insert(task)
+                        task = Task(0, "Boden Wischen", "Was getan werden muss, muss getan werden", 40, 4, 14 ,null,null)
+                        taskDao.insert(task)
+                        task = Task(0, "Einkauf", "Fülle den Kühlschrank wieder auf", 120, 4, 15,null,null)
+                        taskDao.insert(task)
+                        task = Task(0, "Emails beantworten", "Nimm dir Zeit, deine Mails zu beantworten oder Termine zu buchen", 40, 4, 16,null,null)
+                        taskDao.insert(task)
+
+                        task = Task(0, "Kuchen backen", "Ob für dich, zum Verschenken oder zum Teilen! Such dir ein neues Rezept auf kochchef.io aus und backe diesen Kuchen!", 60, 5, 18,null,null)
+                        taskDao.insert(task)
+
+                        task = Task(0, "English Breakfast", "2 Eier, Speck, gebackene Dosenbohnen & Toast. Easy und schnell!", 15, 5, 19,null,null)
                         taskDao.insert(task)
 
 

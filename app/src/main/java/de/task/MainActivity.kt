@@ -23,6 +23,11 @@ import de.task.screens.*
 
 
 import android.util.Log
+import java.sql.Date
+import java.sql.Timestamp
+import java.time.LocalDate
+import java.time.LocalTime
+import kotlin.random.Random
 
 
 class MainActivity : ComponentActivity() {
@@ -39,12 +44,39 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         createRequest()
 
+
         val firstname: String = taskViewModel.firstTask
         val listOfTask: List<Task> = taskViewModel.allTasks
 
-        listOfTask.forEach { Log.e("DatabaseList?","diese Task heißt " + it.name) }
+        if(listOfTask.isNotEmpty()) {
+            val chosenTask = listOfTask.get(
+                Random.nextInt(0, listOfTask.size - 1)
+            )
+            val chosenCompletedTask = CompletedTask(
+                0,
+                chosenTask.name,
+                chosenTask.description,
+                chosenTask.duration,
+                chosenTask.categoryId,
+                chosenTask.pictureId,
+                LocalDate.now().toString(),
+                LocalTime.now().toString()
+            )
 
-       Log.e("Datenbank?",firstname)
+
+
+
+
+
+            taskViewModel.insert(chosenCompletedTask)
+        }
+        val listOfCompletedTask: List<CompletedTask> = taskViewModel.allCompletedTask
+
+        listOfTask.forEach { Log.e("DatabaseList?","diese Task heißt " + it.name) }
+        listOfCompletedTask.forEach { Log.e("DatabaseCompletedList?","diese Task heißt " + it.name) }
+
+
+        if (firstname != null){Log.e("Datenbank?",firstname)}
 
         setContent {
             Task2021Theme {

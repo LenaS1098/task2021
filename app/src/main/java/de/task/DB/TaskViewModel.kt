@@ -6,12 +6,24 @@ import kotlinx.coroutines.launch
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     val allTasks: List<Task> = repository.allTask
 
+    val getUser: User= repository.getUser
+
+    val allCompletedTask: List<CompletedTask> = repository.allCompletedTask
 
     val firstTask: String = repository.firstTask
 
     fun insert(task: Task) = viewModelScope.launch {
         repository.insert(task)
     }
+
+    fun insert(user: User) = viewModelScope.launch {
+        repository.insert(user)
+    }
+
+    fun insert(completedTask: CompletedTask) = viewModelScope.launch {
+        repository.insert(completedTask)
+    }
+
 }
 
 class TaskViewModelFactory(private val repository: TaskRepository) : ViewModelProvider.Factory {

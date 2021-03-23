@@ -12,6 +12,8 @@ interface TaskDao {
     @Query("SELECT Task.name FROM task WHERE Task.id = 1")
     fun getFirstTaskName(): String
 
+
+
     @Insert(onConflict =  OnConflictStrategy.IGNORE)
     fun insert(task:Task)
 
