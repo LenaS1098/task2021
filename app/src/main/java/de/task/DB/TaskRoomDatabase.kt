@@ -59,12 +59,11 @@ public abstract class TaskRoomDatabase: RoomDatabase() {
 
 
 
-                        task = Task(0, "Sprache lernen", "Der Appstore bietet viele Möglichkeiten, um eine neue Sprache zu lernen. Nehm dir dochmal die 5 Minuten, die du sonst nie findest", 5, 2, 6,
+                        task = Task(0, "Sprache lernen", "Der Appstore bietet viele Möglichkeiten, um eine neue Sprache zu lernen. Nehm dir dochmal die 5 Minuten, die du sonst nie findest", 5, 3, 6,
                             null,null)
                         taskDao.insert(task)
-                        task = Task(0, "Pflanzen", "Besorg dir eine Zimmerpflanze oder kümmer dich um bereits vorhandene", 5, 2, 7,null,null)
+                        task = Task(0, "Pflanzen", "Besorg dir eine Zimmerpflanze oder kümmer dich um bereits vorhandene", 5, 3, 7,null,null)
                         taskDao.insert(task)
-
                         task = Task(0, "Yoga", "Finde deine Innere Mitte, und suche dir eine Yoga Übung", 20, 3, 8,null,null)
                         taskDao.insert(task)
                         task = Task(0, "Meditation", "Suche dir eine Meditationsübung und finde etwas innere Ruhe ", 20, 3, 9,null,null)
@@ -87,7 +86,6 @@ public abstract class TaskRoomDatabase: RoomDatabase() {
 
                         task = Task(0, "Kuchen backen", "Ob für dich, zum Verschenken oder zum Teilen! Such dir ein neues Rezept auf kochchef.io aus und backe diesen Kuchen!", 60, 5, 18,null,null)
                         taskDao.insert(task)
-
                         task = Task(0, "English Breakfast", "2 Eier, Speck, gebackene Dosenbohnen & Toast. Easy und schnell!", 15, 5, 19,null,null)
                         taskDao.insert(task)
 

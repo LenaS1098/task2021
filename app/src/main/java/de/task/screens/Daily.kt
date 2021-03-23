@@ -29,6 +29,17 @@ data class ExpandableCardModel(val id: Int, val title: String)
 
 @Composable
 fun TaskCard(task: Task){
+    val taskId = task.categoryId
+    val pId : Int
+    when(taskId){
+        1 -> pId = R.drawable.running
+        2 -> pId = R.drawable.flower
+        3 -> pId = R.drawable.music
+        4 -> pId = R.drawable.chores
+        5 -> pId = R.drawable.cooking
+        else -> pId = R.drawable.task
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,12 +59,15 @@ fun TaskCard(task: Task){
                 }
         ) {
             Image(
-                bitmap = ImageBitmap.imageResource(id = R.drawable.task),
+
+            bitmap = ImageBitmap.imageResource(id = pId),
                 contentDescription = "TaskImage",
                 modifier = Modifier
                     .clip(RoundedCornerShape(25.dp))
                     .size(100.dp)
                     .padding(start = 10.dp)
+
+
             )
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                 Text(text = task.name, fontSize = 24.sp)
