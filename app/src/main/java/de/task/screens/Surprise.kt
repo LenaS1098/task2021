@@ -3,160 +3,95 @@ package de.task.screens
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import de.task.R
 
-class Task(id: Int, title: String, category: String, description: String, time: Int) {
+class Task(id: Int, title: String, category: String, description: String, time: Int, image: Painter) {
     var taskID: Int = id
     var taskTitle: String = title
     var taskCategory: String = category
     var taskDescription: String = description
     var taskTime: Int = time
-
+    var taskImage: Painter = image
 }
 
 @Composable
-fun SurpriseButton() {
+fun surprise() {
+
+    var surpriseCheck = remember { mutableStateOf(false) }
     val task1 = Task(
         10,
         "Liegestütze",
         "Fitness",
         "Mache 15 Liegestütze! Wenn du keine Kraft hast, mach sie Gegen eine Wand. Nächstes mal gegen einen Tisch und dann auf den Knien",
-        5
-        )
+        5,
+        painterResource(id = R.drawable.pushups256)
+    )
     val task2 = Task(
         40,
         "Staubsaugen",
         "Chores",
         "Was getan werden muss, muss getan werden",
-        20
+        20,
+        painterResource(id = R.drawable.staubsaugen256)
     )
     val task3 = Task(
         34,
         "Malen",
         "Relax",
         "Wow! Ein echter Göthe!",
-        30
+        30,
+        painterResource(id = R.drawable.malen256)
     )
-
-//test ob das hier gepusht wird
+    val taskList = listOf(task1, task2, task3)
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
+        modifier = Modifier.fillMaxWidth()
     ) {
-        val context = LocalContext.current
-        Button(
-            onClick = {
-                Toast.makeText(context,"Lass dich überraschen!",Toast.LENGTH_LONG).show()
-            },
-            colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Red)
+
+
+        print(taskList[0].taskTitle)
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(bottom = 80.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+
         ) {
-            Text("Surprise Me!")
+            val context = LocalContext.current
+            Button(
+                onClick = {
+                    Toast.makeText(context, "Lass dich überraschen!", Toast.LENGTH_LONG).show()
+                    surpriseCheck.value = true
+                },
+                colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Blue)
+            ) {
+                Text("Surprise Me!")
+            }
         }
     }
-}
-
-@Composable
-fun TaskCard (
-    onClick: (() -> Unit)? =null
-){
-    Card (
-        backgroundColor = Color.LightGray,
-        shape = RoundedCornerShape(3.dp),
-        border = BorderStroke(2.dp, Color.Black),
-        elevation = 12.dp,
-        modifier = Modifier.fillMaxWidth()
-    ){
-        Column{
-            val image: Painter = painterResource(id = R.drawable.defaulttask256)
-            Image(
-                modifier = Modifier
-                    .height(225.dp),
-                contentScale = ContentScale.Fit,
-                painter = image,contentDescription = ""
-            )
-            Text(
-                text = "Hallo test das ist eine Card",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun surprise(){
-
-    var checkedState = remember { mutableStateOf(false) }
-
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ){
-          val task1 = Task(
-              10,
-              "Liegestütze",
-              "Fitness",
-              "Mache 15 Liegestütze! Wenn du keine Kraft hast, mach sie Gegen eine Wand. Nächstes mal gegen einen Tisch und dann auf den Knien",
-              5
-              )
-          val task2 = Task(
-              40,
-              "Staubsaugen",
-              "Chores",
-              "Was getan werden muss, muss getan werden",
-              20
-          )
-          val task3 = Task(
-              34,
-              "Malen",
-              "Relax",
-              "Wow! Ein echter Göthe!",
-              30
-          )
 
 
-          Column(
-              modifier = Modifier
-                  .fillMaxWidth()
-                  .fillMaxHeight()
-                  .padding(bottom = 80.dp),
-              horizontalAlignment = Alignment.CenterHorizontally,
-              verticalArrangement = Arrangement.Bottom
+    if (surpriseCheck.value) {
 
-          ) {
-              val context = LocalContext.current
-              Button(
-                  onClick = {
-                      Toast.makeText(context,"Lass dich überraschen!",Toast.LENGTH_LONG).show()
-                      checkedState.value = true
-                  },
-                  colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Red)
-              ) {
-                  Text("Surprise Me!")
-              }
-          }
-      }
-    if(checkedState.value) {
+
+        var taskNo1 = (0..2).random()
+        var taskNo2 = (0..2).random()
+        var taskNo3 = (0..2).random()
         Card(
             backgroundColor = Color.LightGray,
             shape = RoundedCornerShape(3.dp),
@@ -166,21 +101,24 @@ fun surprise(){
         ) {
             Column {
                 Row {
-                    val image: Painter = painterResource(id = R.drawable.defaulttask256)
+                    val image: Painter = taskList[taskNo1].taskImage
                     Image(
                         painter = image,
                         contentDescription = "",
                         modifier = Modifier.height(100.dp)
                     )
                     Text(
-                        text = "Hallo test das ist eine Card",
+                        text = taskList[taskNo1].taskTitle,
                         modifier = Modifier.padding(16.dp)
                     )
                 }
             }
 
         }
+
+
     }
+
     }
 
 
