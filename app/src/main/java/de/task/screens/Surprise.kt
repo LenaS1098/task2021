@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,7 +31,7 @@ class Task(id: Int, title: String, category: String, description: String, time: 
 @Composable
 fun surprise() {
 
-    var surpriseCheck = remember { mutableStateOf(false) }
+    var surpriseCheck: MutableState<Boolean> = remember { mutableStateOf(false) }
     val task1 = Task(
         10,
         "Liegestütze",
@@ -76,9 +77,11 @@ fun surprise() {
             Button(
                 onClick = {
                     Toast.makeText(context, "Lass dich überraschen!", Toast.LENGTH_LONG).show()
-                    surpriseCheck.value = true
+                    if(surpriseCheck.value){
+                        surpriseCheck.value = false
+                    }else{surpriseCheck.value=true}
                 },
-                colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Blue)
+                colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Red)
             ) {
                 Text("Surprise Me!")
             }
