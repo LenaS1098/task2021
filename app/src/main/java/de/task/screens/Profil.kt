@@ -19,19 +19,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import be.sigmadelta.calpose.model.CalposeDate
+import de.task.DB.CompletedTask
+import de.task.DB.Task
 import de.task.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.YearMonth
 
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen(listCompletedTasks: List<CompletedTask>){
     Column() {
         ProfileHeader()
-        PageContent()
+        PageContent(listCompletedTasks)
     }
 
 }
-
+/*
 @Composable
 fun CalenderTab(){
     val monthFlow = MutableStateFlow(YearMonth.now())
@@ -41,72 +43,13 @@ fun CalenderTab(){
 
     Spacer(modifier = Modifier.padding(7.dp))
     CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet)
-}
+}*/
+
+
+
 
 @Composable
-fun StatTab(){
-    Boxes()
-}
-
-@Composable
-fun SettingTab(){
-
-        val checkedState = remember { mutableStateOf(false) }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp)
-                .background(color = colors.background)
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(2f)
-            ) {
-                Text(
-                    text = "Einstellung mit einer langen Beschreibung",
-                    fontStyle = FontStyle.Italic
-                )
-
-            }
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-            ) {
-
-                Checkbox(
-                    checked = checkedState.value,
-                    modifier = Modifier.padding(start = 30.dp),
-                    onCheckedChange = { checkedState.value = it })
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(2f)
-            ) {
-                Text(text = "Kurze Einstellung", fontStyle = FontStyle.Italic)
-
-            }
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-            ) {
-
-                Checkbox(
-                    checked = checkedState.value,
-                    modifier = Modifier.padding(start = 30.dp),
-                    onCheckedChange = { checkedState.value = it })
-            }
-
-        }
-}
-
-@Composable
-fun PageContent(){
+fun PageContent(listCompletedTasks: List<CompletedTask>){
 
     val tabState = remember { mutableStateOf(0) }
 
@@ -128,10 +71,9 @@ fun PageContent(){
         .padding(horizontal = 10.dp)) {
         when(tabState.value){
             0 -> {
-                CalenderTab()
+                CalenderTab(listCompletedTasks)
             }
-            1 -> { StatTab(
-            )}
+            1 -> { Boxes(listCompletedTasks)}
             2 -> {
                 SettingTab()}
             else -> {

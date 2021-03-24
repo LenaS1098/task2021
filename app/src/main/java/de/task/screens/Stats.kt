@@ -1,5 +1,7 @@
 package de.task.screens
 
+import android.app.slice.Slice
+import android.os.Parcel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,44 +19,18 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
+import de.task.DB.CompletedTask
 import de.task.DB.Task
 
 @Composable
-fun Boxes() {
+fun Boxes(listCompletedTasks: List<CompletedTask>) {
         Spacer(modifier = Modifier.padding(15.dp))
         Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
             Card(
                 modifier = Modifier
-                    .size(125.dp)
-                    .clip(
-                        RoundedCornerShape(10.dp)
-                    ),
-                contentColor = MaterialTheme.colors.onPrimary,
-                backgroundColor = MaterialTheme.colors.primary
-            )
-            {
-                Text(textAlign = TextAlign.Center, text = "A")
-            }
-            Card(
-                modifier = Modifier
-                    .size(125.dp)
-                    .clip(
-                        RoundedCornerShape(10.dp)
-                    ),
-                contentColor = MaterialTheme.colors.onPrimary,
-                backgroundColor = MaterialTheme.colors.primary,
-
-            )
-            {
-                Text(textAlign = TextAlign.Center, text = "B")
-            }
-        }
-        Spacer(modifier = Modifier.padding(15.dp))
-        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
-            Card(
-                modifier = Modifier
-                    .size(125.dp)
+                    .size(160.dp)
                     .clip(
                         RoundedCornerShape(10.dp)
                     ),
@@ -63,17 +39,44 @@ fun Boxes() {
             )
             {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(textAlign = TextAlign.Center, text = "Completed Tasks", fontStyle = FontStyle.Italic, fontSize = 18.sp)
+                    Text(textAlign = TextAlign.Center, text = "Streak", fontStyle = FontStyle.Italic, fontSize = 18.sp)
+                    Spacer(modifier = Modifier.padding(4.dp))
+
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Text(textAlign = TextAlign.Center, text = "3", style = MaterialTheme.typography.caption)
+                    Text(textAlign = TextAlign.Center, text = "00", style = MaterialTheme.typography.h4)
                 }
-
-
             }
             Card(
                 modifier = Modifier
-                    .size(125.dp)
+                    .size(160.dp)
+                    .clip(
+                        RoundedCornerShape(10.dp)
+                    ),
+                contentColor = MaterialTheme.colors.onPrimary,
+                backgroundColor = MaterialTheme.colors.primary,
+
+            )
+            {
+                var totalDuration = 0
+                listCompletedTasks.forEach{
+                    totalDuration += it.duration
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(textAlign = TextAlign.Center, text = "Total Duration", fontStyle = FontStyle.Italic, fontSize = 18.sp)
+                    Spacer(modifier = Modifier.padding(4.dp))
+
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    Text(textAlign = TextAlign.Center, text = "$totalDuration", style = MaterialTheme.typography.h4)
+                }
+            }
+        }
+        Spacer(modifier = Modifier.padding(15.dp))
+        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
+            Card(
+                modifier = Modifier
+                    .size(160.dp)
                     .clip(
                         RoundedCornerShape(10.dp)
                     ),
@@ -81,7 +84,36 @@ fun Boxes() {
                 backgroundColor = MaterialTheme.colors.primary
             )
             {
-                Text(textAlign = TextAlign.Center, text = "D")
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(textAlign = TextAlign.Center, text = "Total Tasks", fontStyle = FontStyle.Italic, fontSize = 18.sp)
+                    Spacer(modifier = Modifier.padding(4.dp))
+
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    Text(textAlign = TextAlign.Center, text = "${listCompletedTasks.size}", style = MaterialTheme.typography.h4)
+                }
+
+
+
+            }
+            Card(
+                modifier = Modifier
+                    .size(160.dp)
+                    .clip(
+                        RoundedCornerShape(10.dp)
+                    ),
+                contentColor = MaterialTheme.colors.onPrimary,
+                backgroundColor = MaterialTheme.colors.primary
+            )
+            {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(textAlign = TextAlign.Center, text = "Favorite Categories", fontStyle = FontStyle.Italic, fontSize = 18.sp)
+                    Spacer(modifier = Modifier.padding(4.dp))
+
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                    Text(textAlign = TextAlign.Center, text = "PieChart", fontSize = 18.sp)
+                }
             }
         }
 

@@ -1,0 +1,3 @@
+[submodule "charts"]
+	path = charts
+	url = git://github.com/tehras/charts.git
