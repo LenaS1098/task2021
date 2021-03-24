@@ -21,8 +21,6 @@ import androidx.compose.material.Text
 import de.task.R
 import de.task.DB.Task
 
-
-
 class hardTask(id: Int, title: String, category: String, description: String, time: Int, image: Painter) {
     var taskID: Int = id
     var taskTitle: String = title
