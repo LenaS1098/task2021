@@ -16,9 +16,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import de.task.R
+import de.task.DB.Task
 
-class Task(id: Int, title: String, category: String, description: String, time: Int, image: Painter) {
+
+
+class hardTask(id: Int, title: String, category: String, description: String, time: Int, image: Painter) {
     var taskID: Int = id
     var taskTitle: String = title
     var taskCategory: String = category
@@ -27,41 +32,15 @@ class Task(id: Int, title: String, category: String, description: String, time: 
     var taskImage: Painter = image
 }
 
+
 @Composable
-fun surprise() {
+fun surprise(taskList: List<Task>, zufuellendeListe: MutableList<Task>) {
 
     var surpriseCheck = remember { mutableStateOf(false) }
-    val task1 = Task(
-        10,
-        "Liegestütze",
-        "Fitness",
-        "Mache 15 Liegestütze! Wenn du keine Kraft hast, mach sie Gegen eine Wand. Nächstes mal gegen einen Tisch und dann auf den Knien",
-        5,
-        painterResource(id = R.drawable.pushups256)
-    )
-    val task2 = Task(
-        40,
-        "Staubsaugen",
-        "Chores",
-        "Was getan werden muss, muss getan werden",
-        20,
-        painterResource(id = R.drawable.staubsaugen256)
-    )
-    val task3 = Task(
-        34,
-        "Malen",
-        "Relax",
-        "Wow! Ein echter Göthe!",
-        30,
-        painterResource(id = R.drawable.malen256)
-    )
-    val taskList = listOf(task1, task2, task3)
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-
-
-        print(taskList[0].taskTitle)
 
         Column(
             modifier = Modifier
@@ -76,53 +55,37 @@ fun surprise() {
             Button(
                 onClick = {
                     Toast.makeText(context, "Lass dich überraschen!", Toast.LENGTH_LONG).show()
-                    surpriseCheck.value = true
+                    if(surpriseCheck.value){
+                        surpriseCheck.value = false
+                    }else{surpriseCheck.value=true}
                 },
-                colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Blue)
+                colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Red)
             ) {
                 Text("Surprise Me!")
             }
         }
     }
 
-
     if (surpriseCheck.value) {
 
 
-        var taskNo1 = (0..2).random()
-        var taskNo2 = (0..2).random()
-        var taskNo3 = (0..2).random()
-        Card(
-            backgroundColor = Color.LightGray,
-            shape = RoundedCornerShape(3.dp),
-            border = BorderStroke(2.dp, Color.Black),
-            elevation = 12.dp,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column {
-                Row {
-                    val image: Painter = taskList[taskNo1].taskImage
-                    Image(
-                        painter = image,
-                        contentDescription = "",
-                        modifier = Modifier.height(100.dp)
-                    )
-                    Text(
-                        text = taskList[taskNo1].taskTitle,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            }
+        var taskNo1 = (0..taskList.size).random()
+        var taskNo2 = (0..taskList.size).random()
+        var taskNo3 = (0..taskList.size).random()
+
+        Column {
+
+            TaskCard(taskList[taskNo1])
+            TaskCard(taskList[taskNo2])
+            TaskCard(taskList[taskNo3])
 
         }
+        var neueListe = mutableListOf<Task>(taskList[taskNo1],taskList[taskNo2],taskList[taskNo3])
 
-
+    zufuellendeListe.removeAll(taskList)
+        zufuellendeListe.addAll(neueListe)
     }
-
     }
-
-
-
 
 
 

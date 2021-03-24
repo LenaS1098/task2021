@@ -24,6 +24,7 @@ import de.task.screens.*
 
 
 import android.util.Log
+import androidx.compose.runtime.remember
 import de.task.DB.Task
 import java.sql.Date
 import java.sql.Timestamp
@@ -38,6 +39,8 @@ class MainActivity : ComponentActivity() {
     private val RC_SIGN_IN: Int = 0
     private var mGoogleSignInClient: GoogleSignInClient? = null
      private var currenState = LoginState.NONE
+
+
 
 
     private val taskViewModel: TaskViewModel by viewModels {
@@ -120,6 +123,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
 
+    var zufuellendeListe = remember {mutableListOf<Task>()}
+
     Scaffold(bottomBar = {
         BottomNavigation {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -141,9 +146,8 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
         NavHost(navController = navController, startDestination = Screen.Daily.route, builder = {
 
             composable(Screen.Streak.route){ streak()}
-            composable(Screen.Surprise.route){ surprise()}
-            composable(Screen.Daily.route){ DummyCalendar(listOfTask)}
-
+            composable(Screen.Surprise.route){ surprise(listOfTask, zufuellendeListe)}
+            composable(Screen.Daily.route){ DummyCalendar(zufuellendeListe)}
             composable(Screen.Settings.route){ settingScreen(mGoogleSignInClient, context) }
         })
     }
