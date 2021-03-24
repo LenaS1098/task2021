@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
@@ -55,7 +56,7 @@ fun TaskCard(task: Task){
             .clickable {
             },
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = Color.LightGray
+        backgroundColor = MaterialTheme.colors.primaryVariant
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -90,7 +91,7 @@ fun TaskCard(task: Task){
 fun Header(){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .background(Color.White)
+        .background(MaterialTheme.colors.background)
     ) {
 
         Row(modifier = Modifier
@@ -125,7 +126,6 @@ fun DummyCalendar(taskList: List<Task>) {
         items(currentList){
         task -> TaskCard(task = task)
     }
-        
     }
 }
 

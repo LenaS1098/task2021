@@ -8,6 +8,9 @@ import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
@@ -22,6 +25,7 @@ import androidx.compose.material.BottomNavigationItem as BottomNavigationItem1
 import de.task.screens.*
 
 
+
 import android.util.Log
 import androidx.compose.runtime.remember
 import de.task.DB.Task
@@ -33,8 +37,8 @@ class MainActivity : ComponentActivity() {
 
     private val RC_SIGN_IN: Int = 0
     private var mGoogleSignInClient: GoogleSignInClient? = null
-     private var currenState = LoginState.NONE
-
+    private var currenState = LoginState.NONE
+    val list = listOf<Task>()
 
 
 
@@ -44,7 +48,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createRequest()
-
 
         val firstname: String = taskViewModel.firstTask
         val listOfTask: List<Task> = taskViewModel.allTasks
@@ -116,7 +119,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
+fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
 
     var dailyTaskList = remember {mutableListOf<Task>()}
 
@@ -140,10 +143,12 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
     }) {
         NavHost(navController = navController, startDestination = Screen.Daily.route, builder = {
 
-            composable(Screen.Streak.route){ streak()}
+
+            composable(Screen.Profil.route){ ProfileScreen() }
+
+            //composable(Screen.Streak.route){ streak()}
             composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList)}
             composable(Screen.Daily.route){ DummyCalendar(dailyTaskList)}
-            composable(Screen.Settings.route){ settingScreen(mGoogleSignInClient, context) }
         })
     }
 }
@@ -151,30 +156,28 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
 
 
 @Composable
-fun componentScreen(currentRoute : String){
+fun ComponentScreen(currentRoute : String){
     Text(currentRoute .repeat(50), maxLines = 3, textAlign = TextAlign.Center )
 }
 @Composable
 fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
     val items = listOf<Screen>(
         Screen.Daily,
-        Screen.Streak,
         Screen.Surprise,
-        Screen.Settings
+        Screen.Profil
     )
     val navController = rememberNavController()
-    bottomNavigation(navController = navController, items, mGoogleSignInClient, context, listOfTask)
+    BottomNavigation(navController = navController, items, mGoogleSignInClient, context, listOfTask)
 }
 
 
 @Composable
 fun DefaultPreview(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
     Task2021Theme {
-        bottomNavigation(navController =  rememberNavController(), items = listOf<Screen>(
+        BottomNavigation(navController =  rememberNavController(), items = listOf<Screen>(
             Screen.Daily,
-            Screen.Streak,
             Screen.Surprise,
-            Screen.Settings
+            Screen.Profil
         ), mGoogleSignInClient, context, listOfTask)
     }
 }

@@ -1,14 +1,15 @@
 package de.task.screens
 
+<<<<<<<<< Temporary merge branch 1
 import android.util.Log
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -30,6 +31,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.DayOfWeek
 
 import java.time.YearMonth
+import de.task.*
+
+
 
 @Composable
 fun streak() {
@@ -38,7 +42,7 @@ fun streak() {
     val selectionSet = MutableStateFlow(setOf<CalposeDate>())
     selectionSet.value = getStreakDateS()
 
-    calendarStreak(monthFlow = monthFlow, selectionSet = selectionSet)
+    CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet)
 
 }
 
@@ -53,10 +57,11 @@ fun getStreakDateS(): Set<CalposeDate>{
 }
 
 @Composable
-fun calendarStreak(
+fun CalendarStreak(
     monthFlow: MutableStateFlow<YearMonth>,
     selectionSet: MutableStateFlow<Set<CalposeDate>>
 ) {
+
     val selections = selectionSet.collectAsState().value
     Column(modifier = Modifier
         .padding(vertical = 25.dp)
@@ -153,3 +158,4 @@ fun calendarStreak(
         )
     }
 }
+

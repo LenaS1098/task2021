@@ -12,5 +12,5 @@ sealed class Screen (val route: String, @StringRes val resourceId: Int, val icon
     object Streak : Screen("streak", R.string.streak, Icons.Filled.Call)
     object Daily : Screen("daily",R.string.home, Icons.Filled.Home)
     object Surprise : Screen("surprise",R.string.surprise, Icons.Filled.Warning)
-    object Settings : Screen("settings",R.string.settings, Icons.Filled.Settings)
+    object Profil : Screen("profil",R.string.profil, Icons.Filled.Settings)
 }
