@@ -21,15 +21,16 @@ import androidx.compose.ui.unit.dp
 import be.sigmadelta.calpose.model.CalposeDate
 import de.task.DB.CompletedTask
 import de.task.DB.Task
+import de.task.DB.TaskViewModel
 import de.task.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.YearMonth
 
 @Composable
-fun ProfileScreen(listCompletedTasks: List<CompletedTask>){
+fun ProfileScreen(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel){
     Column() {
         ProfileHeader()
-        PageContent(listCompletedTasks)
+        PageContent(listCompletedTasks, taskViewModel)
     }
 
 }
@@ -49,7 +50,7 @@ fun CalenderTab(){
 
 
 @Composable
-fun PageContent(listCompletedTasks: List<CompletedTask>){
+fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel){
 
     val tabState = remember { mutableStateOf(0) }
 
@@ -75,7 +76,7 @@ fun PageContent(listCompletedTasks: List<CompletedTask>){
             }
             1 -> { Boxes(listCompletedTasks)}
             2 -> {
-                SettingTab()}
+                SettingTab(taskViewModel)}
             else -> {
                 Text("Calender Tab", modifier = Modifier.padding(top= 10.dp))
             }
