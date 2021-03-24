@@ -1,7 +1,9 @@
 package de.task.screens
 
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,17 +19,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.Text
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import de.task.DB.Task
 import de.task.R
 
 @Composable
-fun surpriseTaskCard(task: Task){
+fun surpriseTaskCard(task: Task, listTask:List<Task>){
     val taskId = task.categoryId
     val pId : Int
+    var meineTask = remember {mutableStateOf(task)}
+
     when(taskId){
         1 -> pId = R.drawable.running
         2 -> pId = R.drawable.flower
@@ -50,6 +57,7 @@ fun surpriseTaskCard(task: Task){
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
@@ -64,26 +72,35 @@ fun surpriseTaskCard(task: Task){
                     .clip(RoundedCornerShape(25.dp))
                     .size(100.dp)
                     .padding(start = 10.dp)
+                    .weight(2f)
             )
-            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
-                Text(text = "Dauer:  "+ task.duration, modifier = Modifier.padding(top = 6.dp))
-                Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
+            Column(modifier = Modifier.padding(horizontal = 8.dp).weight(3f)
+            ) {
+                Text(text = meineTask.value.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
+                Text(text = "Dauer:  "+ meineTask.value.duration, modifier = Modifier.padding(top = 6.dp))
+                Text(text = "Kategorie:  ${meineTask.value.categoryId}", modifier = Modifier.padding(top = 4.dp))
                 if(clicked.value)
                     Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
             }
-            Button(
-                onClick = {
-                    //diese Task austauschen
-                },colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Red)
-            ){
-                Text("Diese Aufgabe austauschen")
+
+
+
+            Button(onClick = {
+                meineTask.value = listTask.get((listTask.indices).random())
+            },modifier = Modifier.weight(1f)){
+                Image(bitmap = ImageBitmap.imageResource(id= R.drawable.defaulttask256),
+                    contentDescription = "",
+                modifier = Modifier
+                    .clip(RoundedCornerShape(25.dp))
+                    
+                    .padding(start=10.dp)
+                )
             }
+
+
         }
     }
 }
-
-
 
 
 @Composable
@@ -94,7 +111,6 @@ fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
     var taskNo2 = 0
     var taskNo3 = 0
     var neueListe = remember { mutableListOf<Task>() }
-    var surpriseShown = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -152,9 +168,9 @@ fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
         }
         Column {
 
-            surpriseTaskCard(taskList[taskNo1])
-            surpriseTaskCard(taskList[taskNo2])
-            surpriseTaskCard(taskList[taskNo3])
+            surpriseTaskCard(taskList[taskNo1],taskList)
+            surpriseTaskCard(taskList[taskNo2],taskList)
+            surpriseTaskCard(taskList[taskNo3],taskList)
         }
 
     }
