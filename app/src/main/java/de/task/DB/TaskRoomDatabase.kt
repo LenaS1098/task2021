@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(entities = arrayOf(Task::class,Category::class,User::class),version = 1,exportSchema =false)
-public abstract class TaskRoomDatabase: RoomDatabase() {
+abstract class TaskRoomDatabase: RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
     abstract fun categoryDao(): CategoryDao

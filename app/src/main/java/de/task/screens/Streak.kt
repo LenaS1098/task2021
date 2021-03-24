@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -101,7 +102,7 @@ fun CalendarStreak(
                     }
                 }
                 val weight = if (isSelected) 1f else WEIGHT_7DAY_WEEK
-                val bgColor = if (isSelected) Color.Red else Color.Transparent
+                val bgColor = if (isSelected) MaterialTheme.colors.primaryVariant else Color.Transparent
 
                 val widget: @Composable () -> Unit = {
                     DefaultDay(

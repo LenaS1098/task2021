@@ -6,7 +6,6 @@ import kotlinx.coroutines.launch
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     val allTasks: List<Task> = repository.allTask
 
-
     val firstTask: String = repository.firstTask
 
     fun insert(task: Task) = viewModelScope.launch {
