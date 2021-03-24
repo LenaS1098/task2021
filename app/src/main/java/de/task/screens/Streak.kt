@@ -1,6 +1,5 @@
 package de.task.screens
 
-<<<<<<<<< Temporary merge branch 1
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
