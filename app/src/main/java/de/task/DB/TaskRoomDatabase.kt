@@ -81,7 +81,7 @@ public abstract class TaskRoomDatabase: RoomDatabase() {
                         taskDao.insert(task)
                         task = Task(0, "Einkauf", "Fülle den Kühlschrank wieder auf", 120, 4, 15,null,null)
                         taskDao.insert(task)
-                        task = Task(0, "Emails beantworten", "Nimm dir Zeit, deine Mails zu beantworten oder Termine zu buchen", 40, 4, 16,null,null)
+                        task = Task(0, "Emails", "Nimm dir Zeit, deine Mails zu beantworten oder Termine zu buchen", 40, 4, 16,null,null)
                         taskDao.insert(task)
 
                         task = Task(0, "Kuchen backen", "Ob für dich, zum Verschenken oder zum Teilen! Such dir ein neues Rezept auf kochchef.io aus und backe diesen Kuchen!", 60, 5, 18,null,null)

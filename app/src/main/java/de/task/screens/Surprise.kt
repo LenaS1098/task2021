@@ -31,9 +31,9 @@ fun surpriseTaskCard(task: Task){
     when(taskId){
         1 -> pId = R.drawable.running
         2 -> pId = R.drawable.flower
-        3 -> pId = R.drawable.music
+        3 -> pId = R.drawable.relax
         4 -> pId = R.drawable.chores
-        5 -> pId = R.drawable.cooking
+        5 -> pId = R.drawable.cooking2
         else -> pId = R.drawable.task
     }
 
@@ -66,7 +66,7 @@ fun surpriseTaskCard(task: Task){
                     .padding(start = 10.dp)
             )
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
+                Text(text = task.name, fontSize = 22.sp, modifier = Modifier.padding(top = 10.dp))
                 Text(text = "Dauer:  "+ task.duration, modifier = Modifier.padding(top = 6.dp))
                 Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
                 if(clicked.value)
