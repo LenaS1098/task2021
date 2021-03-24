@@ -32,7 +32,7 @@ fun surpriseTaskCard(task: Task){
         1 -> pId = R.drawable.running
         2 -> pId = R.drawable.flower
         3 -> pId = R.drawable.relax
-        4 -> pId = R.drawable.chores
+        4 -> pId = R.drawable.staubsauger
         5 -> pId = R.drawable.cooking2
         else -> pId = R.drawable.task
     }

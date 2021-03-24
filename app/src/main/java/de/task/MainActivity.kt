@@ -70,6 +70,8 @@ class MainActivity : ComponentActivity() {
 
 
 
+            Log.e("monat" ,"LocalDate.now().dayOfWeek")
+
 
 
             //taskViewModel.insert(chosenCompletedTask)
