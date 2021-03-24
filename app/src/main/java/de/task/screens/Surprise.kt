@@ -1,8 +1,8 @@
 package de.task.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -14,27 +14,87 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.Card
 import androidx.compose.material.Text
-import de.task.R
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.unit.sp
 import de.task.DB.Task
+import de.task.R
 
-class hardTask(id: Int, title: String, category: String, description: String, time: Int, image: Painter) {
-    var taskID: Int = id
-    var taskTitle: String = title
-    var taskCategory: String = category
-    var taskDescription: String = description
-    var taskTime: Int = time
-    var taskImage: Painter = image
+@Composable
+fun surpriseTaskCard(task: Task){
+    val taskId = task.categoryId
+    val pId : Int
+    when(taskId){
+        1 -> pId = R.drawable.running
+        2 -> pId = R.drawable.flower
+        3 -> pId = R.drawable.music
+        4 -> pId = R.drawable.chores
+        5 -> pId = R.drawable.cooking
+        else -> pId = R.drawable.task
+    }
+
+    val clicked = remember { mutableStateOf(false) }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .padding(top = 20.dp)
+            .clickable {
+            },
+        shape = RoundedCornerShape(15.dp),
+        backgroundColor = Color.LightGray
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    clicked.value = !clicked.value
+                }
+        ) {
+            Image(
+
+                bitmap = ImageBitmap.imageResource(id = pId),
+                contentDescription = "TaskImage",
+                modifier = Modifier
+                    .clip(RoundedCornerShape(25.dp))
+                    .size(100.dp)
+                    .padding(start = 10.dp)
+            )
+            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
+                Text(text = "Dauer:  "+ task.duration, modifier = Modifier.padding(top = 6.dp))
+                Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
+                if(clicked.value)
+                    Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
+            }
+            Button(
+                onClick = {
+                    //diese Task austauschen
+                },colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Red)
+            ){
+                Text("Diese Aufgabe austauschen")
+            }
+        }
+    }
 }
 
 
-@Composable
-fun surprise(taskList: List<Task>, zufuellendeListe: MutableList<Task>) {
 
+
+@Composable
+fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
+    var acceptClicked = remember { mutableStateOf(false) }
     var surpriseCheck = remember { mutableStateOf(false) }
+    var taskNo1 = 0
+    var taskNo2 = 0
+    var taskNo3 = 0
+    var neueListe = remember { mutableListOf<Task>() }
+    var surpriseShown = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -53,37 +113,53 @@ fun surprise(taskList: List<Task>, zufuellendeListe: MutableList<Task>) {
             Button(
                 onClick = {
                     Toast.makeText(context, "Lass dich überraschen!", Toast.LENGTH_LONG).show()
-                    if(surpriseCheck.value){
+                    if (surpriseCheck.value) {
                         surpriseCheck.value = false
-                    }else{surpriseCheck.value=true}
+                    } else {
+                        surpriseCheck.value = true
+                    }
                 },
                 colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Red)
             ) {
                 Text("Surprise Me!")
             }
+            Button(
+                onClick = {
+                    neueListe.removeAll(taskList)
+                    neueListe.add(taskList[taskNo1])
+                    neueListe.add(taskList[taskNo2])
+                    neueListe.add(taskList[taskNo3])
+
+                    dailyTaskList.removeAll(taskList)
+                    dailyTaskList.addAll(neueListe)
+                },
+                colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Green)
+            ) {
+                Text("Accept")
+            }
         }
     }
+
+
+
 
     if (surpriseCheck.value) {
 
-
-        var taskNo1 = (0..taskList.size).random()
-        var taskNo2 = (0..taskList.size).random()
-        var taskNo3 = (0..taskList.size).random()
-
+        if (!acceptClicked.value) {
+            taskNo1 = (taskList.indices).random()
+            taskNo2 = (taskList.indices).random()
+            taskNo3 = (taskList.indices).random()
+        }
         Column {
 
-            TaskCard(taskList[taskNo1])
-            TaskCard(taskList[taskNo2])
-            TaskCard(taskList[taskNo3])
-
+            surpriseTaskCard(taskList[taskNo1])
+            surpriseTaskCard(taskList[taskNo2])
+            surpriseTaskCard(taskList[taskNo3])
         }
-        var neueListe = mutableListOf<Task>(taskList[taskNo1],taskList[taskNo2],taskList[taskNo3])
 
-    zufuellendeListe.removeAll(taskList)
-        zufuellendeListe.addAll(neueListe)
     }
-    }
+
+}
 
 
 

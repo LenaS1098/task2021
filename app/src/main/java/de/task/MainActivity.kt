@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -26,13 +25,9 @@ import de.task.screens.*
 import android.util.Log
 import androidx.compose.runtime.remember
 import de.task.DB.Task
-import java.sql.Date
-import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalTime
 import kotlin.random.Random
-
-import de.task.screens.*
 
 class MainActivity : ComponentActivity() {
 
@@ -123,7 +118,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {
 
-    var zufuellendeListe = remember {mutableListOf<Task>()}
+    var dailyTaskList = remember {mutableListOf<Task>()}
 
     Scaffold(bottomBar = {
         BottomNavigation {
@@ -146,8 +141,8 @@ fun bottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
         NavHost(navController = navController, startDestination = Screen.Daily.route, builder = {
 
             composable(Screen.Streak.route){ streak()}
-            composable(Screen.Surprise.route){ surprise(listOfTask, zufuellendeListe)}
-            composable(Screen.Daily.route){ DummyCalendar(zufuellendeListe)}
+            composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList)}
+            composable(Screen.Daily.route){ DummyCalendar(dailyTaskList)}
             composable(Screen.Settings.route){ settingScreen(mGoogleSignInClient, context) }
         })
     }
