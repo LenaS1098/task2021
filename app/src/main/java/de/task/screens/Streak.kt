@@ -1,3 +1,5 @@
+@file:Suppress("Annotator", "Annotator", "Annotator")
+
 package de.task.screens
 
 import android.util.Log
@@ -8,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,10 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import be.sigmadelta.calpose.Calpose
-import be.sigmadelta.calpose.CalposeHeader
 import be.sigmadelta.calpose.WEIGHT_7DAY_WEEK
 import be.sigmadelta.calpose.model.CalposeActions
 import be.sigmadelta.calpose.model.CalposeDate
@@ -31,7 +32,12 @@ import java.time.DayOfWeek
 
 import java.time.YearMonth
 import de.task.*
-
+import de.task.DB.CompletedTask
+import kotlinx.coroutines.flow.forEach
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 @Composable
@@ -42,7 +48,6 @@ fun streak() {
     selectionSet.value = getStreakDateS()
 
     CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet)
-
 }
 
 fun getStreakDateS(): Set<CalposeDate>{
@@ -54,6 +59,41 @@ fun getStreakDateS(): Set<CalposeDate>{
     val set :Set<CalposeDate> = setOf(date1,date2,date3,date4)
     return set
 }
+
+@Composable
+fun CalenderTab(listComletedTasks : List<CompletedTask>){
+    val listDates: MutableList<LocalDate> = mutableListOf()
+    listComletedTasks.forEach {
+        val localDate = LocalDate.parse(it.date, DateTimeFormatter.ISO_DATE)
+        //val date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        Log.e("DateFormat",localDate.toString())
+        listDates.add(localDate)
+    }
+
+    var setDates: Set<CalposeDate> = setOf()
+    listDates.forEach {
+        val tempDate: CalposeDate = CalposeDate(it.dayOfMonth, it.dayOfWeek, getYearMonth(it))
+        setDates = setDates.plus(tempDate)
+    }
+    val monthFlow = MutableStateFlow(YearMonth.now())
+
+    val selectionSet = MutableStateFlow(setDates)
+
+    setDates.forEach {
+        Log.e("set",it.toString())
+    }
+    CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet)
+}
+fun getYearMonth(date: LocalDate) : YearMonth{
+    return YearMonth.of(date.year, date.month)
+}
+/*fun getDayOfWeek(date: Date): DayOfWeek {
+    val cal = Calendar.getInstance()
+    cal.time = date
+    val day = cal.get(Calendar.DAY_OF_WEEK)
+    Log.e("weekday",DayOfWeek.of(day).toString())
+    return DayOfWeek.of(day)
+}*/
 
 @Composable
 fun CalendarStreak(
@@ -103,12 +143,15 @@ fun CalendarStreak(
                     }
                 }
                 val weight = if (isSelected) 1f else WEIGHT_7DAY_WEEK
-                val bgColor = if (isSelected) Color.Red else Color.Transparent
+                val bgColor = if (isSelected) MaterialTheme.colors.primaryVariant else Color.Transparent
 
                 val widget: @Composable () -> Unit = {
                     DefaultDay(
                         text = dayDate.day.toString(),
-                        modifier = Modifier.padding(4.dp).weight(weight).fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .weight(weight)
+                            .fillMaxWidth(),
                         style = TextStyle(
                             color = when {
                                 isSelected -> Color.White
