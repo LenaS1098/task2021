@@ -8,6 +8,9 @@ import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
@@ -26,8 +29,8 @@ class MainActivity : ComponentActivity() {
 
     private val RC_SIGN_IN: Int = 0
     private var mGoogleSignInClient: GoogleSignInClient? = null
-     private var currenState = LoginState.NONE
-
+    private var currenState = LoginState.NONE
+    val list = listOf<Task>()
 
     private val taskViewModel: TaskViewModel by viewModels {
         TaskViewModelFactory((application as RoomApplication).repository)
@@ -38,8 +41,6 @@ class MainActivity : ComponentActivity() {
 
         val firstname: String = taskViewModel.firstTask
         val listOfTask: List<Task> = taskViewModel.allTasks
-
-
 
         setContent {
             Task2021Theme {
@@ -75,6 +76,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @Composable
 fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>) {

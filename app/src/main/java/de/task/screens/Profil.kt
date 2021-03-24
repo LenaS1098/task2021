@@ -2,6 +2,7 @@ package de.task.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,7 +18,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import be.sigmadelta.calpose.model.CalposeDate
 import de.task.R
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.YearMonth
 
 @Composable
@@ -31,66 +34,75 @@ fun ProfileScreen(){
 
 @Composable
 fun CalenderTab(){
-    
+    val monthFlow = MutableStateFlow(YearMonth.now())
+
+    val selectionSet = MutableStateFlow(setOf<CalposeDate>())
+    selectionSet.value = getStreakDateS()
+
+    Spacer(modifier = Modifier.padding(7.dp))
+    CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet)
 }
 
 @Composable
 fun StatTab(){
-    Text("Stat Tab", modifier = Modifier.padding(top= 10.dp))
+    Boxes()
 }
 
 @Composable
 fun SettingTab(){
-    val checkedState = remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp)
-    ) {
-        Box(
+
+        val checkedState = remember { mutableStateOf(false) }
+        Row(
             modifier = Modifier
-                .weight(2f)
+                .fillMaxWidth()
+                .padding(top = 10.dp)
+                .background(color = colors.background)
         ) {
-            Text(
-                text = "Einstellung mit einer langen Beschreibung",
-                fontStyle = FontStyle.Italic
-            )
+            Box(
+                modifier = Modifier
+                    .weight(2f)
+            ) {
+                Text(
+                    text = "Einstellung mit einer langen Beschreibung",
+                    fontStyle = FontStyle.Italic
+                )
+
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+
+                Checkbox(
+                    checked = checkedState.value,
+                    modifier = Modifier.padding(start = 30.dp),
+                    onCheckedChange = { checkedState.value = it })
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(2f)
+            ) {
+                Text(text = "Kurze Einstellung", fontStyle = FontStyle.Italic)
+
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+
+                Checkbox(
+                    checked = checkedState.value,
+                    modifier = Modifier.padding(start = 30.dp),
+                    onCheckedChange = { checkedState.value = it })
+            }
 
         }
-        Box(
-            modifier = Modifier
-                .weight(1f)
-        ) {
-
-            Checkbox(
-                checked = checkedState.value,
-                modifier = Modifier.padding(start = 30.dp),
-                onCheckedChange = { checkedState.value = it })
-        }
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(2f)
-        ) {
-            Text(text = "Kurze Einstellung", fontStyle = FontStyle.Italic)
-
-        }
-        Box(
-            modifier = Modifier
-                .weight(1f)
-        ) {
-
-            Checkbox(
-                checked = checkedState.value,
-                modifier = Modifier.padding(start = 30.dp),
-                onCheckedChange = { checkedState.value = it })
-        }
-    }
 }
 
 @Composable
@@ -111,10 +123,12 @@ fun PageContent(){
             Text(text = "Settings")
         }
     }
-    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 10.dp)) {
         when(tabState.value){
             0 -> {
-                Text("Calender Tab", modifier = Modifier.padding(top= 10.dp))
+                CalenderTab()
             }
             1 -> { StatTab(
             )}
@@ -165,8 +179,10 @@ fun ProfileHeader(){
             ){
                Icon(painter = painterResource(id = R.drawable.ic_logout),"icon")
             }
-            // TODO: 23.03.2021 Streak + Duration 
+
+
         }
+
     }
 }
 

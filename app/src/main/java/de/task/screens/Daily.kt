@@ -46,7 +46,7 @@ fun TaskCard(task: Task){
             .clickable {
             },
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = Color.LightGray
+        backgroundColor = MaterialTheme.colors.primaryVariant
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -103,7 +103,6 @@ fun Header(){
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DummyCalendar(taskList: List<Task>) {
-
 
     val currentList = taskList
 
