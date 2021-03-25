@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.task.DB.Task
 import de.task.R
+import java.time.LocalDate
 
 
 
@@ -103,15 +104,9 @@ fun Header(){
             .align(Alignment.CenterHorizontally)
             .padding(top = 20.dp)
         ) {
-            Image(bitmap = ImageBitmap.imageResource(id = R.drawable.backicon), contentDescription = "backIcon",
-                modifier = Modifier
-                    .size(20.dp)
-            )
-            Text(text = "heutiges Datum als String?", modifier = Modifier.padding(start = 10.dp, end = 10.dp) )
-            Image(bitmap = ImageBitmap.imageResource(id = R.drawable.nexticon), contentDescription = "nextIcon",
-                modifier = Modifier
-                    .size(30.dp)
-            )
+
+            Text(text = LocalDate.now().toString(), modifier = Modifier.padding(start = 10.dp, end = 10.dp) )
+
         }
 
     }

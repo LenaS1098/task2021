@@ -1,5 +1,7 @@
 package de.task.DB
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 
@@ -7,6 +9,8 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     val allTasks: List<Task> = repository.allTask
 
     val getUser: User= repository.getUser
+
+    val isDark = mutableStateOf(false)
 
     val allCompletedTask: List<CompletedTask> = repository.allCompletedTask
 
