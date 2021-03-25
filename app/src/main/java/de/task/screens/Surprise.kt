@@ -112,6 +112,11 @@ fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
     var taskNo3 = 0
     var neueListe = remember { mutableListOf<Task>() }
     var surpriseShown = remember { mutableStateOf(false) }
+    val listofcat1 = taskList.filter { task -> task.categoryId ==1 }
+    val listofcat2 = taskList.filter { task -> task.categoryId ==3 }
+    val listofcat3 = taskList.filter { task -> task.categoryId ==4 }
+
+
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -143,9 +148,9 @@ fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
             Button(
                 onClick = {
                     neueListe.removeAll(taskList)
-                    neueListe.add(taskList[taskNo1])
-                    neueListe.add(taskList[taskNo2])
-                    neueListe.add(taskList[taskNo3])
+                    neueListe.add(listofcat1[taskNo1])
+                    neueListe.add(listofcat2[taskNo2])
+                    neueListe.add(listofcat3[taskNo3])
 
                     dailyTaskList.removeAll(taskList)
                     dailyTaskList.addAll(neueListe)
@@ -162,21 +167,29 @@ fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
 
     if (surpriseCheck.value) {
 
+
         if (!acceptClicked.value) {
-            taskNo1 = (taskList.indices).random()
-            taskNo2 = (taskList.indices).random()
-            taskNo3 = (taskList.indices).random()
+
+
+
+            taskNo1 = (listofcat1.indices).random()
+            taskNo2 = (listofcat2.indices).random()
+            taskNo3 = (listofcat3.indices).random()
+
+
+
         }
         Column {
 
-            surpriseTaskCard(taskList[taskNo1],taskList)
-            surpriseTaskCard(taskList[taskNo2],taskList)
-            surpriseTaskCard(taskList[taskNo3],taskList)
+            surpriseTaskCard(listofcat1[taskNo1],listofcat1)
+            surpriseTaskCard(listofcat2[taskNo2],listofcat2)
+            surpriseTaskCard(listofcat3[taskNo3],listofcat3)
         }
 
     }
 
 }
+
 
 
 
