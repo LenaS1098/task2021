@@ -143,7 +143,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     //ggf Nullpointer
-                    Greeting(mGoogleSignInClient!!, this, listOfTask, listOfCompletedTask)
+                    Greeting(mGoogleSignInClient!!, this, listOfTask, listOfCompletedTask,taskViewModel)
                 }
             }
         }
