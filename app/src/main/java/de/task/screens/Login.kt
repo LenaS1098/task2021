@@ -100,7 +100,7 @@ fun LoginHeader(mGoogleSignInClient: GoogleSignInClient, context: Context){
             when(loginState){
                 LoginState.NONE -> {
                     userName = "Logge dich bitte ein"
-                    userEmail = "Hier könnte deine Werbung stehen"
+                    userEmail = "Hier könnte Ihre Werbung stehen"
                 }
                 LoginState.LOGGED -> {
                     currentAccount = GoogleSignIn.getLastSignedInAccount(context)

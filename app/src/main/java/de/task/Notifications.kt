@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
-class Receiver: BroadcastReceiver() {
+class Receiver(): BroadcastReceiver() {
 
     @SuppressLint("UnspecifiedImmutableFlag")
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -40,12 +40,11 @@ class Receiver: BroadcastReceiver() {
             val pendingIntent =
                 PendingIntent.getActivity(context, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            //val sound : Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
             val builder = NotificationCompat.Builder(context, R.string.channelId.toString())
                 .setSmallIcon(R.drawable.backicon)
                 .setContentTitle("task")
-                .setContentText("test")
+                .setContentText(intent!!.getStringExtra("text"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
@@ -58,10 +57,17 @@ class Receiver: BroadcastReceiver() {
 }
 
 @SuppressLint("UnspecifiedImmutableFlag")
-fun setReminder(context: Context){
+fun setReminder(context: Context, text: String): PendingIntent{
     Log.e("reminder","funktion")
     val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, Receiver::class.java)
+    intent.putExtra("text",text)
     val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60 *1000, pendingIntent)
+    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 15 *1000, pendingIntent)
+    return pendingIntent
+}
+
+fun cancelReminder(context: Context, intent: PendingIntent){
+    val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    alarmMgr.cancel(intent)
 }
