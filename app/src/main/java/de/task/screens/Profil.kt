@@ -1,4 +1,5 @@
 package de.task.screens
+import de.task.*
 
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
@@ -33,14 +34,16 @@ import java.time.YearMonth
 fun ProfileScreen(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel, mGoogleSignInClient: GoogleSignInClient, context: Context){
     Column() {
         LoginHeader(mGoogleSignInClient = mGoogleSignInClient , context = context)
-        PageContent(listCompletedTasks, taskViewModel)
+        PageContent(listCompletedTasks, taskViewModel, context)
     }
 
 }
 
 
 @Composable
-fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel){
+fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel, context: Context){
+
+
 
     val tabState = remember { mutableStateOf(0) }
 
@@ -52,6 +55,9 @@ fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskView
         }
         Button(onClick = { tabState.value = 1} , colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryVariant), shape = CircleShape){
             Text(text = "Settings")
+        }
+        Button(onClick = { setReminder(context)} , colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryVariant), shape = CircleShape){
+            Text(text = "Reminder")
         }
     }
     Column(modifier = Modifier
