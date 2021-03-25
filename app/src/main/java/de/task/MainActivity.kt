@@ -1,6 +1,14 @@
 package de.task
 
+import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,6 +36,9 @@ import de.task.screens.*
 
 import android.util.Log
 import androidx.compose.runtime.*
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import de.task.DB.Task
 import java.time.LocalDate
 import java.time.LocalTime
@@ -43,6 +54,7 @@ class MainActivity : ComponentActivity() {
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private var currentState = LoginState.NONE
     val list = listOf<Task>()
+
 
 
 
@@ -129,6 +141,8 @@ class MainActivity : ComponentActivity() {
         }
         val listOfCompletedTask: List<CompletedTask> = taskViewModel.allCompletedTask
 
+
+
         listOfTask.forEach { Log.e("DatabaseList?","diese Task heißt " + it.name) }
         listOfCompletedTask.forEach { Log.e("DatabaseCompletedList?","diese Task heißt " + it.name) }
 
@@ -173,12 +187,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+ fun createNotificationChannel(context: Context) {
+    // Create the NotificationChannel, but only on API 26+ because
+    // the NotificationChannel class is new and not in the support library
+
+}
 
 @Composable
 fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks : List<CompletedTask>, taskViewModel: TaskViewModel) {
 
     val dailyTaskList = remember {mutableListOf<Task>()}
-
+    var currentList = remember {mutableListOf<Task>()}
     Scaffold(bottomBar = {
         BottomNavigation {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -202,7 +221,7 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
             composable(Screen.Streak.route){ CalenderTab(listComletedTasks = listCompletedTasks)}
             composable(Screen.Profil.route){ ProfileScreen(listCompletedTasks, taskViewModel, mGoogleSignInClient, context) }
             composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList)}
-            composable(Screen.Daily.route){ DummyCalendar(dailyTaskList)}
+            composable(Screen.Daily.route){ DummyCalendar(dailyTaskList,taskViewModel)}
         })
     }
 }

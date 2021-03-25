@@ -15,4 +15,5 @@ val LightPurple = Color(0xFFD1CAFA)
 val MediumPurple = Color(0xFF8576E8)
 val MediumYellow = Color(0xFFFCE54E)
 val LightYellow = Color(0xFFFCF0A3)
+val LightGreen = Color(0xFF90ee90)
 
