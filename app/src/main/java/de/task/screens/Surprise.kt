@@ -1,11 +1,13 @@
 package de.task.screens
 
+import android.icu.number.Scale
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -21,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -28,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import de.task.DB.Task
 import de.task.R
+import de.task.ui.theme.*
 
 @Composable
 fun surpriseTaskCard(task: Task, completeList:List<Task>){
@@ -50,20 +54,15 @@ fun surpriseTaskCard(task: Task, completeList:List<Task>){
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .padding(top = 20.dp)
-            .height(100.dp)
-            .clickable {
-            },
+            .height(100.dp),
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = Color.LightGray
+        backgroundColor = MaterialTheme.colors.primaryVariant
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
-                    clicked.value = !clicked.value
-                }
         ) {
             Image(
 
@@ -84,22 +83,14 @@ fun surpriseTaskCard(task: Task, completeList:List<Task>){
                     Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
             }
 
-
-
-            Button(onClick = {
-                thisCardTask.value = completeList.get((completeList.indices).random())
-
-            },modifier = Modifier.weight(1f)){
-                Image(bitmap = ImageBitmap.imageResource(id= R.drawable.defaulttask256),
-                    contentDescription = "",
-                modifier = Modifier
-                    .clip(RoundedCornerShape(25.dp))
-                    
-                    .padding(start=10.dp)
-                )
+            IconButton(
+                onClick = {
+                    thisCardTask.value = completeList.get((completeList.indices).random())
+                },modifier = Modifier.weight(1f)
+            ){
+                Image(bitmap = ImageBitmap.imageResource(id= R.drawable.delete64),contentScale = ContentScale.FillWidth,
+                    contentDescription = "")
             }
-
-
         }
     }
 }
@@ -112,12 +103,10 @@ fun surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
     var taskNo1 = 0
     var taskNo2 = 0
     var taskNo3 = 0
-    var neueListe = remember { mutableListOf<Task>() }
-    var surpriseShown = remember { mutableStateOf(false) }
     val listofcat1 = completeList.filter { task -> task.categoryId ==1 }
     val listofcat2 = completeList.filter { task -> task.categoryId ==3 }
     val listofcat3 = completeList.filter { task -> task.categoryId ==4 }
-
+    var showAccept = remember {mutableStateOf(false)}
 
 
     Column(
@@ -131,65 +120,53 @@ fun surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
                 .padding(bottom = 80.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
-
         ) {
             val context = LocalContext.current
             Button(
                 onClick = {
-                    Toast.makeText(context, "Lass dich überraschen!", Toast.LENGTH_LONG).show()
                     if (surpriseCheck.value) {
                         surpriseCheck.value = false
                     } else {
                         surpriseCheck.value = true
                     }
+                    showAccept.value = true
                 },
-                colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Red)
+                colors = ButtonDefaults.textButtonColors(backgroundColor = MediumYellow)
             ) {
                 Text("Surprise Me!")
             }
-            Button(
-                onClick = {
-                    currentList.removeAll(completeList)
-                    currentList.add(listofcat1[taskNo1])
-                    currentList.add(listofcat2[taskNo2])
-                    currentList.add(listofcat3[taskNo3])
+            if(showAccept.value) {
+                Button(
+                    onClick = {
+                        Toast.makeText(context, "Akzeptiert!", Toast.LENGTH_LONG).show()
+                        currentList.removeAll(completeList)
+                        currentList.add(listofcat1[taskNo1])
+                        currentList.add(listofcat2[taskNo2])
+                        currentList.add(listofcat3[taskNo3])
 
-                    dailyList.removeAll(completeList)
-                    dailyList.addAll(currentList)
-                },
-                colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Green)
-            ) {
-                Text("Accept")
+                        dailyList.removeAll(completeList)
+                        dailyList.addAll(currentList)
+                    },
+                    colors = ButtonDefaults.textButtonColors(backgroundColor = MediumPurple)
+                ) {
+                    Text("Accept")
+                }
             }
         }
     }
 
-
-
-
     if (surpriseCheck.value) {
-
-
         if (!acceptClicked.value) {
-
-
-
             taskNo1 = (listofcat1.indices).random()
             taskNo2 = (listofcat2.indices).random()
             taskNo3 = (listofcat3.indices).random()
-
-
-
         }
         Column {
-
             surpriseTaskCard(listofcat1[taskNo1],listofcat1)
             surpriseTaskCard(listofcat2[taskNo2],listofcat2)
             surpriseTaskCard(listofcat3[taskNo3],listofcat3)
         }
-
     }
-
 }
 
 
