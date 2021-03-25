@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
             val chosenTask = listOfTask.get(
                 Random.nextInt(0, listOfTask.size - 1)
             )
-            val chosenCompletedTask1 = CompletedTask(
+            val chosenCompletedTask = CompletedTask(
                 0,
                 chosenTask.name,
                 chosenTask.description,
@@ -185,9 +185,6 @@ class MainActivity : ComponentActivity() {
             currentState = LoginState.LOGGED
         }
     }
-
-
-
 }
 
  fun createNotificationChannel(context: Context) {
@@ -200,7 +197,7 @@ class MainActivity : ComponentActivity() {
 fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks : List<CompletedTask>, taskViewModel: TaskViewModel) {
 
     val dailyTaskList = remember {mutableListOf<Task>()}
-
+    var currentList = remember {mutableListOf<Task>()}
     Scaffold(bottomBar = {
         BottomNavigation {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -223,21 +220,25 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
 
             composable(Screen.Streak.route){ CalenderTab(listComletedTasks = listCompletedTasks)}
             composable(Screen.Profil.route){ ProfileScreen(listCompletedTasks, taskViewModel, mGoogleSignInClient, context) }
-            composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList)}
+            composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList,currentList)}
             composable(Screen.Daily.route){ DummyCalendar(dailyTaskList)}
         })
     }
 }
 
 
+
 @Composable
-fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel) {
+fun ComponentScreen(currentRoute : String){
+    Text(currentRoute .repeat(50), maxLines = 3, textAlign = TextAlign.Center )
+}
+@Composable
+fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks: List<CompletedTask>) {
     val items = listOf<Screen>(
         Screen.Daily,
         Screen.Surprise,
         Screen.Streak,
         Screen.Profil
-
     )
     val navController = rememberNavController()
     BottomNavigation(navController = navController, items, mGoogleSignInClient, context, listOfTask, listCompletedTasks, taskViewModel)
