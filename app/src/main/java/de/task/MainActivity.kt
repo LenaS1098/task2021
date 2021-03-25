@@ -194,7 +194,7 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
     }) {
         NavHost(navController = navController, startDestination = Screen.Daily.route, builder = {
 
-
+            composable(Screen.Streak.route){ CalenderTab(listComletedTasks = listCompletedTasks)}
             composable(Screen.Profil.route){ ProfileScreen(listCompletedTasks, taskViewModel) }
             composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList)}
             composable(Screen.Daily.route){ DummyCalendar(dailyTaskList)}
@@ -213,7 +213,9 @@ fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTa
     val items = listOf<Screen>(
         Screen.Daily,
         Screen.Surprise,
+        Screen.Streak,
         Screen.Profil
+
     )
     val navController = rememberNavController()
     BottomNavigation(navController = navController, items, mGoogleSignInClient, context, listOfTask, listCompletedTasks, taskViewModel)

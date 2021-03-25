@@ -34,19 +34,6 @@ fun ProfileScreen(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskVi
     }
 
 }
-/*
-@Composable
-fun CalenderTab(){
-    val monthFlow = MutableStateFlow(YearMonth.now())
-
-    val selectionSet = MutableStateFlow(setOf<CalposeDate>())
-    selectionSet.value = getStreakDateS()
-
-    Spacer(modifier = Modifier.padding(7.dp))
-    CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet)
-}*/
-
-
 
 
 @Composable
@@ -82,7 +69,6 @@ fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskView
             }
         }
     }
-
 }
 @Composable
 fun ProfileHeader(){
@@ -113,8 +99,6 @@ fun ProfileHeader(){
             Text(text= "ProfilName", style = MaterialTheme.typography.h6, color = colors.onPrimary)
             Spacer(modifier = Modifier.padding(2.dp))
             Text(text= "Profil Email", style = MaterialTheme.typography.caption, color = colors.onPrimary)
-
-
             Spacer(modifier = Modifier.padding(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),

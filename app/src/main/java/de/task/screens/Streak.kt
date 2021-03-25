@@ -48,45 +48,17 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-/*
+
+
 @Composable
-fun streak() {
-    val monthFlow = MutableStateFlow(YearMonth.now())
-
-    val selectionSet = MutableStateFlow(setOf<CalposeDate>())
-    selectionSet.value = getStreakDateS()
-
-    CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet)
-}
-
-fun getStreakDateS(): Set<CalposeDate>{
-    val date1  = CalposeDate(10,DayOfWeek.WEDNESDAY, YearMonth.now())
-    val date2  = CalposeDate(9,DayOfWeek.TUESDAY, YearMonth.now())
-    val date3  = CalposeDate(8,DayOfWeek.MONDAY, YearMonth.now())
-    val date4 = CalposeDate(20,DayOfWeek.SATURDAY, YearMonth.now().minusMonths(1))
-
-    val set :Set<CalposeDate> = setOf(date1,date2,date3,date4)
-    return set
-}
-*/
-
-fun getListOfDates(listComletedTasks : List<CompletedTask>): MutableList<LocalDate>{
-    val listDates: MutableList<LocalDate> = mutableListOf()
-    listComletedTasks.forEach {
-        val localDate = LocalDate.parse(it.date, DateTimeFormatter.ISO_DATE)
-        //val date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-        Log.e("DateFormat",localDate.toString())
-        listDates.add(localDate)
+fun CalenderTab(listComletedTasks : List<CompletedTask>) {
+    Column {
+        CalenderTab1(listComletedTasks)
     }
-    return listDates
-}
-
-fun getCalposeDate(date: LocalDate): CalposeDate {
-    return CalposeDate(date.dayOfMonth, date.dayOfWeek, getYearMonth(date))
 }
 
 @Composable
-fun CalenderTab(listComletedTasks : List<CompletedTask>){
+fun CalenderTab1(listComletedTasks : List<CompletedTask>){
 
     val listDates = getListOfDates(listComletedTasks)
 
@@ -104,84 +76,7 @@ fun CalenderTab(listComletedTasks : List<CompletedTask>){
     }
     CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet, listComletedTasks)
 }
-fun getYearMonth(date: LocalDate) : YearMonth{
-    return YearMonth.of(date.year, date.month)
-}
-/*fun getDayOfWeek(date: Date): DayOfWeek {
-    val cal = Calendar.getInstance()
-    cal.time = date
-    val day = cal.get(Calendar.DAY_OF_WEEK)
-    Log.e("weekday",DayOfWeek.of(day).toString())
-    return DayOfWeek.of(day)
-}*/
 
-fun calposeDateToString(date: CalposeDate): String{
-    val year = date.month.toString()
-    val day = date.day.toString()
-    return "$year-$day"
-}
-
-fun getTasksOfDay(listComletedTasks: List<CompletedTask>, date: CalposeDate ) : MutableList<CompletedTask>{
-    val list = mutableListOf<CompletedTask>()
-    listComletedTasks.forEach {
-        if(it.date.equals(calposeDateToString(date))){
-            list.add(it)
-        }
-    }
-    return list
-}
-@Composable
-fun CompletedTaskCard(task: CompletedTask){
-    val taskId = task.categoryId
-    val pId : Int
-    when(taskId){
-        1 -> pId = R.drawable.running
-        2 -> pId = R.drawable.flower
-        3 -> pId = R.drawable.music
-        4 -> pId = R.drawable.chores
-        5 -> pId = R.drawable.cooking
-        else -> pId = R.drawable.task
-    }
-
-    val clicked = remember { mutableStateOf(false) }
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
-            .clickable {
-            },
-        shape = RoundedCornerShape(15.dp),
-        backgroundColor = MaterialTheme.colors.primaryVariant
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    clicked.value = !clicked.value
-                }
-        ) {
-            Image(
-
-                bitmap = ImageBitmap.imageResource(id = pId),
-                contentDescription = "TaskImage",
-                modifier = Modifier
-                    .clip(RoundedCornerShape(25.dp))
-                    .size(100.dp)
-                    .padding(start = 10.dp)
-            )
-            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
-                Text(text = "Dauer:  "+ task.duration, modifier = Modifier.padding(top = 6.dp))
-                Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
-                if(clicked.value)
-                    Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
-            }
-
-        }
-    }
-}
 @Composable
 fun ShowTaskOfDay(listComletedTasks: List<CompletedTask>, date: CalposeDate ){
     val liste = getTasksOfDay(listComletedTasks,date)
@@ -310,4 +205,91 @@ fun CalendarStreak(
     }
 
 }
+@Composable
+fun CompletedTaskCard(task: CompletedTask){
+    val taskId = task.categoryId
+    val pId : Int
+    when(taskId){
+        1 -> pId = R.drawable.running
+        2 -> pId = R.drawable.flower
+        3 -> pId = R.drawable.music
+        4 -> pId = R.drawable.chores
+        5 -> pId = R.drawable.cooking
+        else -> pId = R.drawable.task
+    }
 
+    val clicked = remember { mutableStateOf(false) }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .padding(top = 20.dp)
+            .clickable {
+            },
+        shape = RoundedCornerShape(15.dp),
+        backgroundColor = MaterialTheme.colors.primaryVariant
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    clicked.value = !clicked.value
+                }
+        ) {
+            Image(
+
+                bitmap = ImageBitmap.imageResource(id = pId),
+                contentDescription = "TaskImage",
+                modifier = Modifier
+                    .clip(RoundedCornerShape(25.dp))
+                    .size(100.dp)
+                    .padding(start = 10.dp)
+            )
+            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
+                Text(text = "Dauer:  "+ task.duration, modifier = Modifier.padding(top = 6.dp))
+                Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
+                if(clicked.value)
+                    Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
+            }
+
+        }
+    }
+}
+
+//gibt die Daten aller CompletedTask in einer Liste wieder
+fun getListOfDates(listComletedTasks : List<CompletedTask>): MutableList<LocalDate>{
+    val listDates: MutableList<LocalDate> = mutableListOf()
+    listComletedTasks.forEach {
+        val localDate = LocalDate.parse(it.date, DateTimeFormatter.ISO_DATE)
+        //val date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        Log.e("DateFormat",localDate.toString())
+        listDates.add(localDate)
+    }
+    return listDates
+}
+
+//LocalDate --> CalposeDate
+fun getCalposeDate(date: LocalDate): CalposeDate {
+    return CalposeDate(date.dayOfMonth, date.dayOfWeek, getYearMonth(date))
+}
+fun getYearMonth(date: LocalDate) : YearMonth{
+    return YearMonth.of(date.year, date.month)
+}
+
+fun calposeDateToString(date: CalposeDate): String{
+    val year = date.month.toString()
+    val day = date.day.toString()
+    return "$year-$day"
+}
+
+fun getTasksOfDay(listComletedTasks: List<CompletedTask>, date: CalposeDate ) : MutableList<CompletedTask>{
+    val list = mutableListOf<CompletedTask>()
+    listComletedTasks.forEach {
+        if(it.date.equals(calposeDateToString(date))){
+            list.add(it)
+        }
+    }
+    return list
+}
