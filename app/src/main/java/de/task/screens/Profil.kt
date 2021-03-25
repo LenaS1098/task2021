@@ -56,9 +56,7 @@ fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskView
         Button(onClick = { tabState.value = 1} , colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryVariant), shape = CircleShape){
             Text(text = "Settings")
         }
-        Button(onClick = { setReminder(context)} , colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryVariant), shape = CircleShape){
-            Text(text = "Reminder")
-        }
+
     }
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -67,7 +65,7 @@ fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskView
             0 -> {
                 Boxes(listCompletedTasks)
             }
-            1 -> { SettingTab(taskViewModel)}
+            1 -> { SettingTab(taskViewModel, context)}
             else -> {
                 Boxes(listCompletedTasks)
             }

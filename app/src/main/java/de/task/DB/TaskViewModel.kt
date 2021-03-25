@@ -1,5 +1,7 @@
 package de.task.DB
 
+import android.app.AlarmManager
+import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
@@ -10,7 +12,12 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
     val getUser: User= repository.getUser
 
+
     val isDark = mutableStateOf(false)
+
+    val reminder = mutableStateOf(false)
+
+    val listTasks = mutableStateOf(mutableListOf<Task>())
 
     val allCompletedTask: List<CompletedTask> = repository.allCompletedTask
 

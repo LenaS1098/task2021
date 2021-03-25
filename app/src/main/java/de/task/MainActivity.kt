@@ -1,6 +1,7 @@
 package de.task
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -10,6 +11,7 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -31,6 +33,7 @@ import de.task.screens.*
 
 import android.util.Log
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.painterResource
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -49,7 +52,8 @@ class MainActivity : ComponentActivity() {
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private var currentState = LoginState.NONE
     val list = listOf<Task>()
-
+    private var alarmMgr: AlarmManager? = null
+    private lateinit var alarmIntent: PendingIntent
 
 
 
@@ -60,6 +64,31 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createRequest()
+
+
+/*
+        alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmIntent = Intent(this, Receiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(this, 0, intent, 0)
+        }
+
+        alarmMgr?.set(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + 60 * 1000,
+            alarmIntent
+        )
+
+
+        if(alarmMgr!= null) {
+            Log.e("reminder","funktion")
+            alarmMgr!!.setExact(
+                AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis() + 60 * 1000,
+                alarmIntent
+            )
+        }else{
+            Log.e("reminder","null")
+        }*/
 
         val firstname: String = taskViewModel.firstTask
         val listOfTask: List<Task> = taskViewModel.allTasks
@@ -202,7 +231,7 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
             val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
             items.forEach { screen ->
                 BottomNavigationItem1(
-                    icon = { Icon(imageVector = screen.icon, contentDescription = screen.route) },
+                    icon = { Icon(painter = painterResource(id = screen.iconId), contentDescription = screen.route) },
                     label = { Text(stringResource(id = screen.resourceId)) },
                     selected = currentRoute == screen.route,
                     onClick = {
@@ -214,7 +243,7 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
             }
         }
     }) {
-        NavHost(navController = navController, startDestination = Screen.Daily.route, builder = {
+        NavHost(navController = navController, startDestination = Screen.Surprise.route, builder = {
 
             composable(Screen.Streak.route){ CalenderTab(listComletedTasks = listCompletedTasks)}
             composable(Screen.Profil.route){ ProfileScreen(listCompletedTasks, taskViewModel, mGoogleSignInClient, context) }
@@ -228,8 +257,9 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
 @Composable
 fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel) {
     val items = listOf<Screen>(
-        Screen.Daily,
+
         Screen.Surprise,
+        Screen.Daily,
         Screen.Streak,
         Screen.Profil
 
