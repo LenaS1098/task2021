@@ -122,7 +122,7 @@ class MainActivity : ComponentActivity() {
 fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks : List<CompletedTask>) {
 
     val dailyTaskList = remember {mutableListOf<Task>()}
-
+    var currentList = remember {mutableListOf<Task>()}
     Scaffold(bottomBar = {
         BottomNavigation {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -145,7 +145,7 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
 
 
             composable(Screen.Profil.route){ ProfileScreen(listCompletedTasks) }
-            composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList)}
+            composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList, currentList)}
             composable(Screen.Daily.route){ DummyCalendar(dailyTaskList)}
         })
     }

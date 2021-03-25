@@ -30,10 +30,10 @@ import de.task.DB.Task
 import de.task.R
 
 @Composable
-fun surpriseTaskCard(task: Task, listTask:List<Task>){
+fun surpriseTaskCard(task: Task, completeList:List<Task>){
     val taskId = task.categoryId
     val pId : Int
-    var meineTask = remember {mutableStateOf(task)}
+    var thisCardTask = remember {mutableStateOf(task)}
 
     when(taskId){
         1 -> pId = R.drawable.running
@@ -50,6 +50,7 @@ fun surpriseTaskCard(task: Task, listTask:List<Task>){
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .padding(top = 20.dp)
+            .height(100.dp)
             .clickable {
             },
         shape = RoundedCornerShape(15.dp),
@@ -76,9 +77,9 @@ fun surpriseTaskCard(task: Task, listTask:List<Task>){
             )
             Column(modifier = Modifier.padding(horizontal = 8.dp).weight(3f)
             ) {
-                Text(text = meineTask.value.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
-                Text(text = "Dauer:  "+ meineTask.value.duration, modifier = Modifier.padding(top = 6.dp))
-                Text(text = "Kategorie:  ${meineTask.value.categoryId}", modifier = Modifier.padding(top = 4.dp))
+                Text(text = thisCardTask.value.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
+                Text(text = "Dauer:  "+ thisCardTask.value.duration, modifier = Modifier.padding(top = 6.dp))
+                Text(text = "Kategorie:  ${thisCardTask.value.categoryId}", modifier = Modifier.padding(top = 4.dp))
                 if(clicked.value)
                     Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
             }
@@ -86,25 +87,26 @@ fun surpriseTaskCard(task: Task, listTask:List<Task>){
 
 
             Button(onClick = {
-                meineTask.value = listTask.get((listTask.indices).random())
+                thisCardTask.value = completeList.get((completeList.indices).random())
+
             },modifier = Modifier.weight(1f)){
                 Image(bitmap = ImageBitmap.imageResource(id= R.drawable.defaulttask256),
                     contentDescription = "",
                 modifier = Modifier
                     .clip(RoundedCornerShape(25.dp))
-
+                    
                     .padding(start=10.dp)
                 )
             }
+
+
         }
     }
 }
 
 
-
-
 @Composable
-fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
+fun surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList: MutableList<Task>) {
     var acceptClicked = remember { mutableStateOf(false) }
     var surpriseCheck = remember { mutableStateOf(false) }
     var taskNo1 = 0
@@ -112,9 +114,9 @@ fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
     var taskNo3 = 0
     var neueListe = remember { mutableListOf<Task>() }
     var surpriseShown = remember { mutableStateOf(false) }
-    val listofcat1 = taskList.filter { task -> task.categoryId ==1 }
-    val listofcat2 = taskList.filter { task -> task.categoryId ==3 }
-    val listofcat3 = taskList.filter { task -> task.categoryId ==4 }
+    val listofcat1 = completeList.filter { task -> task.categoryId ==1 }
+    val listofcat2 = completeList.filter { task -> task.categoryId ==3 }
+    val listofcat3 = completeList.filter { task -> task.categoryId ==4 }
 
 
 
@@ -147,13 +149,13 @@ fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
             }
             Button(
                 onClick = {
-                    neueListe.removeAll(taskList)
-                    neueListe.add(listofcat1[taskNo1])
-                    neueListe.add(listofcat2[taskNo2])
-                    neueListe.add(listofcat3[taskNo3])
+                    currentList.removeAll(completeList)
+                    currentList.add(listofcat1[taskNo1])
+                    currentList.add(listofcat2[taskNo2])
+                    currentList.add(listofcat3[taskNo3])
 
-                    dailyTaskList.removeAll(taskList)
-                    dailyTaskList.addAll(neueListe)
+                    dailyList.removeAll(completeList)
+                    dailyList.addAll(currentList)
                 },
                 colors = ButtonDefaults.textButtonColors(backgroundColor = Color.Green)
             ) {
@@ -189,7 +191,6 @@ fun surprise(taskList: List<Task>, dailyTaskList: MutableList<Task>) {
     }
 
 }
-
 
 
 
