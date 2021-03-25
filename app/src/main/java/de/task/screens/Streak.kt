@@ -248,7 +248,7 @@ fun CompletedTaskCard(task: CompletedTask){
             )
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                 Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
-                Text(text = "Dauer:  "+ task.duration, modifier = Modifier.padding(top = 6.dp))
+                Text(text = "Dauer:  "+ task.duration + " Minuten", modifier = Modifier.padding(top = 6.dp))
                 Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
                 if(clicked.value)
                     Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)

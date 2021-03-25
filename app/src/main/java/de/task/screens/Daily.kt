@@ -87,7 +87,7 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>,taskViewModel: Ta
             )
             Column(modifier = Modifier.padding(horizontal = 8.dp).weight(3f)            ) {
                 Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
-                Text(text = "Dauer:  " + task.duration, modifier = Modifier.padding(top = 6.dp))
+                Text(text = "Dauer:  " + task.duration + " Minuten", modifier = Modifier.padding(top = 6.dp))
                 Text(
                     text = "Kategorie:  ${task.categoryId}",
                     modifier = Modifier.padding(top = 4.dp)
@@ -103,7 +103,7 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>,taskViewModel: Ta
                     val newList = mutableListOf<Task>()
                 currentList.value.forEach{t ->  if(t.id != task.id){ newList.add(t)}  }
                 currentList.value = newList
-                //taskViewModel.insert(CompletedTask(0,task.name,task.description,task.duration,task.categoryId,task.pictureId,LocalDate.now().toString(),LocalTime.now().toString()))
+                taskViewModel.insert(CompletedTask(0,task.name,task.description,task.duration,task.categoryId,task.pictureId,LocalDate.now().toString(),LocalTime.now().toString()))
             }, modifier = Modifier.weight(1f),colors = ButtonDefaults.buttonColors(backgroundColor = LightGreen)) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_baseline_check_24),

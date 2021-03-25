@@ -221,7 +221,7 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
             composable(Screen.Streak.route){ CalenderTab(listComletedTasks = listCompletedTasks)}
             composable(Screen.Profil.route){ ProfileScreen(listCompletedTasks, taskViewModel, mGoogleSignInClient, context) }
             composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList,currentList)}
-            composable(Screen.Daily.route){ DummyCalendar(dailyTaskList)}
+            composable(Screen.Daily.route){ DummyCalendar(dailyTaskList,taskViewModel)}
         })
     }
 }

@@ -74,10 +74,12 @@ fun surpriseTaskCard(task: Task, completeList:List<Task>){
                     .padding(start = 10.dp)
                     .weight(2f)
             )
-            Column(modifier = Modifier.padding(horizontal = 8.dp).weight(3f)
+            Column(modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .weight(3f)
             ) {
                 Text(text = thisCardTask.value.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
-                Text(text = "Dauer:  "+ thisCardTask.value.duration, modifier = Modifier.padding(top = 6.dp))
+                Text(text = "Dauer:  "+ thisCardTask.value.duration + " Minuten", modifier = Modifier.padding(top = 6.dp))
                 Text(text = "Kategorie:  ${thisCardTask.value.categoryId}", modifier = Modifier.padding(top = 4.dp))
                 if(clicked.value)
                     Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
@@ -88,7 +90,7 @@ fun surpriseTaskCard(task: Task, completeList:List<Task>){
                     thisCardTask.value = completeList.get((completeList.indices).random())
                 },modifier = Modifier.weight(1f)
             ){
-                Image(bitmap = ImageBitmap.imageResource(id= R.drawable.delete64),contentScale = ContentScale.FillWidth,
+                Image(painter = painterResource(id = R.drawable.ic_baseline_refresh_24),contentScale = ContentScale.FillWidth,
                     contentDescription = "")
             }
         }
