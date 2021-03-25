@@ -51,9 +51,10 @@ dependencies {
     implementation "com.github.sigmadeltasoftware:CalPose:1.0.4"
     //google sign-in button
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
-    //Coik fuer Profilbild Anzeige
+    //Coil fuer Profilbild Anzeige
     implementation "com.google.accompanist:accompanist-coil:0.6.2"
-
+    //Notifications
+    implementation "com.android.support:support-compat:28.0.0"
 
 
 

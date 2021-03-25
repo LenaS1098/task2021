@@ -48,6 +48,9 @@ fun getStreak(listCompletedTasks: List<CompletedTask>): Int {
     var streak = 0
     val listDates = getListOfDates(listCompletedTasks)
     val first = listDates[listDates.size - 1]
+    if(listDates.size == 1){
+
+    }
     if (first.isEqual(LocalDate.now()) || first.isEqual(LocalDate.now().minusDays(1))) {
         streak = 1
         for (i in listDates.size - 1 downTo 0) {
@@ -56,7 +59,7 @@ fun getStreak(listCompletedTasks: List<CompletedTask>): Int {
                     streak++
                     Log.e(
                         "streak",
-                        "Date: ${listDates[i].toString()} Counter: ${streak.toString()}"
+                        "Date: ${listDates[i]} Counter: ${streak.toString()}"
                     )
                 } else {
                     return streak
