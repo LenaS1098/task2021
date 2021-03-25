@@ -233,12 +233,13 @@ fun ComponentScreen(currentRoute : String){
     Text(currentRoute .repeat(50), maxLines = 3, textAlign = TextAlign.Center )
 }
 @Composable
-fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks: List<CompletedTask>) {
+fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel) {
     val items = listOf<Screen>(
         Screen.Daily,
         Screen.Surprise,
         Screen.Streak,
         Screen.Profil
+
     )
     val navController = rememberNavController()
     BottomNavigation(navController = navController, items, mGoogleSignInClient, context, listOfTask, listCompletedTasks, taskViewModel)
