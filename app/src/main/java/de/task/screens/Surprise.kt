@@ -53,8 +53,10 @@ fun surpriseTaskCard(task: Task, completeList:List<Task>){
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
-            .height(100.dp),
+            .padding(top = 20.dp, bottom = 20.dp)
+            .height(100.dp)
+            .clickable {
+            },
         shape = RoundedCornerShape(15.dp),
         backgroundColor = MaterialTheme.colors.primaryVariant
     ) {
@@ -63,6 +65,7 @@ fun surpriseTaskCard(task: Task, completeList:List<Task>){
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
+
         ) {
             Image(
 
@@ -163,7 +166,8 @@ fun surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
             taskNo2 = (listofcat2.indices).random()
             taskNo3 = (listofcat3.indices).random()
         }
-        Column {
+        Column(modifier = Modifier.padding(top=60.dp).background(Color.LightGray).clip(
+            RoundedCornerShape(8.dp))) {
             surpriseTaskCard(listofcat1[taskNo1],listofcat1)
             surpriseTaskCard(listofcat2[taskNo2],listofcat2)
             surpriseTaskCard(listofcat3[taskNo3],listofcat3)

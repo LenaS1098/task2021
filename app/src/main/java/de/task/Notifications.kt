@@ -9,12 +9,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import java.util.*
 
 class Receiver(): BroadcastReceiver() {
 
+    @ExperimentalAnimationApi
     @SuppressLint("UnspecifiedImmutableFlag")
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.e("reminder","klasseFunktion")
@@ -57,17 +60,23 @@ class Receiver(): BroadcastReceiver() {
 }
 
 @SuppressLint("UnspecifiedImmutableFlag")
-fun setReminder(context: Context, text: String): PendingIntent{
-    Log.e("reminder","funktion")
+fun setReminder(context: Context, text: String, hour: Int, min: Int): PendingIntent{
+    Log.e("reminder","true")
+    val calendar : Calendar = Calendar.getInstance().apply {
+        timeInMillis = System.currentTimeMillis()
+        set(Calendar.HOUR_OF_DAY,hour)
+        set(Calendar.MINUTE,min)
+    }
     val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, Receiver::class.java)
     intent.putExtra("text",text)
     val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 15 *1000, pendingIntent)
+    alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     return pendingIntent
 }
 
 fun cancelReminder(context: Context, intent: PendingIntent){
     val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmMgr.cancel(intent)
+    Log.e("reminder","cancelled")
 }
