@@ -88,9 +88,7 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>,taskViewModel: Ta
                     .padding(start = 10.dp)
                     .weight(2f)
             )
-            Column(modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .weight(3f)            ) {
+            Column(modifier = Modifier.padding(horizontal = 8.dp).weight(3f)            ) {
                 Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
                 Text(text = "Dauer:  " + task.duration + " Minuten", modifier = Modifier.padding(top = 6.dp))
                 Text(
@@ -103,8 +101,6 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>,taskViewModel: Ta
                         modifier = Modifier.padding(top = 10.dp),
                         fontStyle = FontStyle.Italic
                     )
-                }
-
             }
             Button(onClick = {
                     val newList = mutableListOf<Task>()

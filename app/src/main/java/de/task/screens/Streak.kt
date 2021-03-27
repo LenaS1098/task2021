@@ -205,7 +205,12 @@ fun CalendarStreak(
         ShowTaskOfDay(listComletedTasks = listComletedTasks, date = selectedDate.value)
     }else{
         Column(modifier = Modifier.padding(top = 15.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Text(text= "An diesem Tag wurde keine Aufgabe erledigt :(", modifier = Modifier.padding(start = 10.dp),textAlign = TextAlign.Center)
+            Text(
+                text = "An diesem Tag wurde keine Aufgabe erledigt :(",
+                modifier = Modifier.padding(start = 10.dp),
+                textAlign = TextAlign.Center
+            )
+
         }
     }
 
@@ -256,7 +261,7 @@ fun CompletedTaskCard(task: CompletedTask){
                 Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
                 Text(text = "Dauer:  "+ task.duration + " Minuten", modifier = Modifier.padding(top = 6.dp))
                 Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
-                AnimatedVisibility( visible = clicked.value) {
+                AnimatedVisibility(clicked.value) {
                     Text(
                         text = task.description,
                         modifier = Modifier.padding(top = 10.dp),

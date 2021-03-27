@@ -68,6 +68,7 @@ class MainActivity : ComponentActivity() {
         TaskViewModelFactory((application as RoomApplication).repository)
     }
 
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createRequest()
