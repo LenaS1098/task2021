@@ -51,6 +51,7 @@ import java.util.*
 
 
 
+@ExperimentalAnimationApi
 @Composable
 fun CalenderTab(listComletedTasks : List<CompletedTask>) {
     Column {
@@ -58,6 +59,7 @@ fun CalenderTab(listComletedTasks : List<CompletedTask>) {
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun CalenderTab1(listComletedTasks : List<CompletedTask>){
 
@@ -78,6 +80,7 @@ fun CalenderTab1(listComletedTasks : List<CompletedTask>){
     CalendarStreak(monthFlow = monthFlow, selectionSet = selectionSet, listComletedTasks)
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun ShowTaskOfDay(listComletedTasks: List<CompletedTask>, date: CalposeDate ){
     val liste = getTasksOfDay(listComletedTasks,date)
@@ -89,6 +92,7 @@ fun ShowTaskOfDay(listComletedTasks: List<CompletedTask>, date: CalposeDate ){
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun CalendarStreak(
     monthFlow: MutableStateFlow<YearMonth>,
@@ -201,11 +205,17 @@ fun CalendarStreak(
         ShowTaskOfDay(listComletedTasks = listComletedTasks, date = selectedDate.value)
     }else{
         Column(modifier = Modifier.padding(top = 15.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Text(text= "An diesem Tag wurde keine Aufgabe erledigt :(", modifier = Modifier.padding(start = 10.dp),textAlign = TextAlign.Center)
+            Text(
+                text = "An diesem Tag wurde keine Aufgabe erledigt :(",
+                modifier = Modifier.padding(start = 10.dp),
+                textAlign = TextAlign.Center
+            )
+
         }
     }
 
 }
+@ExperimentalAnimationApi
 @Composable
 fun CompletedTaskCard(task: CompletedTask){
     val taskId = task.categoryId
@@ -251,9 +261,15 @@ fun CompletedTaskCard(task: CompletedTask){
                 Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
                 Text(text = "Dauer:  "+ task.duration + " Minuten", modifier = Modifier.padding(top = 6.dp))
                 Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
-                if(clicked.value)
-                    Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
+                AnimatedVisibility(clicked.value) {
+                    Text(
+                        text = task.description,
+                        modifier = Modifier.padding(top = 10.dp),
+                        fontStyle = FontStyle.Italic
+                    )
+                }
             }
+
 
         }
     }

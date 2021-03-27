@@ -37,6 +37,7 @@ import de.task.screens.*
 
 
 import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.painterResource
 import androidx.core.app.NotificationCompat
@@ -66,6 +67,7 @@ class MainActivity : ComponentActivity() {
         TaskViewModelFactory((application as RoomApplication).repository)
     }
 
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createRequest()
@@ -161,12 +163,12 @@ class MainActivity : ComponentActivity() {
                 LocalDate.now().minusDays(4).toString(),
                 LocalTime.now().toString()
             )
-
-         /*   taskViewModel.insert(chosenCompletedTask5)
+                /*
+            taskViewModel.insert(chosenCompletedTask5)
             taskViewModel.insert(chosenCompletedTask4)
             taskViewModel.insert(chosenCompletedTask3)
-            taskViewModel.insert(chosenCompletedTask2)
-            taskViewModel.insert(chosenCompletedTask1)*/
+            taskViewModel.insert(chosenCompletedTask2)*/
+
         }
         val listOfCompletedTask: List<CompletedTask> = taskViewModel.allCompletedTask
 
@@ -182,7 +184,7 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            Task2021Theme {
+            Task2021Theme(taskViewModel.isDark.value) {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     //ggf Nullpointer
@@ -222,6 +224,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks : List<CompletedTask>, taskViewModel: TaskViewModel) {
 
@@ -261,6 +264,7 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
 fun ComponentScreen(currentRoute : String){
     Text(currentRoute .repeat(50), maxLines = 3, textAlign = TextAlign.Center )
 }
+@ExperimentalAnimationApi
 @Composable
 fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel) {
     val items = listOf<Screen>(
@@ -276,6 +280,7 @@ fun Greeting(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTa
 }
 
 
+@ExperimentalAnimationApi
 @Composable
 fun DefaultPreview(mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>,listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel) {
     Task2021Theme {

@@ -2,6 +2,8 @@ package de.task.screens
 
 
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -43,6 +45,7 @@ import java.time.LocalTime
 
 
 
+@ExperimentalAnimationApi
 @Composable
 fun TaskCard(task: Task, currentList: MutableState<List<Task>>,taskViewModel: TaskViewModel) {
     val taskId = task.categoryId
@@ -92,12 +95,13 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>,taskViewModel: Ta
                     text = "Kategorie:  ${task.categoryId}",
                     modifier = Modifier.padding(top = 4.dp)
                 )
-                if (clicked.value)
+                AnimatedVisibility(visible = clicked.value) {
                     Text(
                         text = task.description,
                         modifier = Modifier.padding(top = 10.dp),
                         fontStyle = FontStyle.Italic
                     )
+                }
             }
             Button(onClick = {
                     val newList = mutableListOf<Task>()
@@ -138,6 +142,7 @@ fun Header(){
     }
 }
 
+@ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DummyCalendar(taskList: List<Task>, taskViewModel: TaskViewModel) {
