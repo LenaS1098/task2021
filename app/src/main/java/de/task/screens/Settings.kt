@@ -30,7 +30,6 @@ import com.afollestad.materialdialogs.datetime.timePicker
 
 import de.task.DB.TaskViewModel
 import de.task.R
-import de.task.ThemeState
 import de.task.cancelReminder
 import de.task.setReminder
 import java.sql.Time
@@ -94,7 +93,8 @@ fun SettingTab(taskViewModel: TaskViewModel, context: Context) {
                 ) {
                     Text(
                         text = "Dark Mode",
-                        fontStyle = FontStyle.Italic
+                        fontStyle = FontStyle.Italic,
+                        color = MaterialTheme.colors.onPrimary
                     )
 
                 }
@@ -148,7 +148,8 @@ fun SettingTab(taskViewModel: TaskViewModel, context: Context) {
                 ) {
                     Text(
                         text = "Notifications",
-                        fontStyle = FontStyle.Italic
+                        fontStyle = FontStyle.Italic,
+                        color = MaterialTheme.colors.onPrimary
                     )
 
                 }

@@ -2,9 +2,12 @@ package de.task.screens
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -17,34 +20,44 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.Text
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import de.task.DB.Task
 import de.task.R
 import de.task.ui.theme.*
 
 @Composable
-fun surpriseTaskCard(
+fun SurpriseTaskCard(
     task: Task,
     completeList: MutableList<Task>,
     taskNo: MutableState<Int>,
     change: MutableState<Boolean>
 ){
     val taskId = task.categoryId
-    val pId : Int
-    var thisCardTask = remember {mutableStateOf(task)}
+    val thisCardTask = remember {mutableStateOf(task)}
 
-    when(taskId){
-        1 -> pId = R.drawable.running
-        2 -> pId = R.drawable.flower
-        3 -> pId = R.drawable.relax
-        4 -> pId = R.drawable.staubsauger
-        5 -> pId = R.drawable.cooking2
-        else -> pId = R.drawable.task
+    val pId : Int = when(taskId){
+        1 -> R.drawable.running
+        2 -> R.drawable.flower
+        3 -> R.drawable.relax
+        4 -> R.drawable.staubsauger
+        5 -> R.drawable.cooking2
+        else -> R.drawable.task
+    }
+
+    val color: Color = when(taskId){
+        3 -> Color(0xFF74B49B) //green
+        5 -> Color(0xFFA4C5C6) //blue
+        2 -> Color(0xFF856C8B)  //purple
+        4 -> Color(0xFFF6D186) //yellow
+        1 -> Color(0xFFE97A7A)     //red
+        else -> MaterialTheme.colors.primary
     }
 
     val clicked = remember { mutableStateOf(false) }
@@ -52,13 +65,13 @@ fun surpriseTaskCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
+            .padding(bottom = 20.dp)
             .height(100.dp)
             .clickable {
                 clicked.value = !clicked.value
             },
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = MaterialTheme.colors.primaryVariant
+        backgroundColor = color
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -74,22 +87,23 @@ fun surpriseTaskCard(
                     .clip(RoundedCornerShape(25.dp))
                     .size(100.dp)
                     .padding(start = 10.dp)
+                    .padding(vertical = 5.dp)
                     .weight(2f)
             )
             Column(modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .weight(3f)
             ) {
-                Text(text = thisCardTask.value.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
-                Text(text = "Dauer:  "+ thisCardTask.value.duration + " Minuten", modifier = Modifier.padding(top = 6.dp))
-                Text(text = "Kategorie:  ${thisCardTask.value.categoryId}", modifier = Modifier.padding(top = 4.dp))
+                Text(text = thisCardTask.value.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp), color = MaterialTheme.colors.onPrimary)
+                Text(text = "Dauer:  "+ thisCardTask.value.duration + " Minuten", modifier = Modifier.padding(top = 6.dp), color = MaterialTheme.colors.onPrimary)
+                Text(text = "Kategorie:  ${thisCardTask.value.categoryId}", modifier = Modifier.padding(top = 4.dp), color = MaterialTheme.colors.onPrimary)
                 if(clicked.value)
-                    Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic)
+                    Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic, color = MaterialTheme.colors.onPrimary)
             }
 
             IconButton(
                 onClick = {
-                    thisCardTask.value = completeList.get(taskNo.value % completeList.size)
+                    thisCardTask.value = completeList[taskNo.value % completeList.size]
                     taskNo.value++
                     Log.e("random",taskNo.value.toString()+ " " + thisCardTask.value.name)
                     change.value = true
@@ -103,8 +117,9 @@ fun surpriseTaskCard(
 }
 
 
+@ExperimentalAnimationApi
 @Composable
-fun surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList: MutableList<Task>) {
+fun Surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList: MutableList<Task>) {
 
 
     val listofcat1: MutableList<Task> = completeList.filter { task -> task.categoryId ==1 } as MutableList<Task>
@@ -115,21 +130,20 @@ fun surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
     val randomStart2 = (listofcat2.indices).random()
     val randomStart3 = (listofcat3.indices).random()
 
-    var lock = remember { mutableStateOf(false) }
+    val lock = remember { mutableStateOf(false) }
 
-    var change1 = remember { mutableStateOf(false) }
-    var change2 = remember { mutableStateOf(false) }
-    var change3 = remember { mutableStateOf(false) }
+    val change1 = remember { mutableStateOf(false) }
+    val change2 = remember { mutableStateOf(false) }
+    val change3 = remember { mutableStateOf(false) }
 
 
 
-    var acceptClicked = remember { mutableStateOf(false) }
-    var surpriseCheck = remember { mutableStateOf(false) }
-    var taskNo1  = remember {mutableStateOf(randomStart1)}
-    var taskNo2 = remember {mutableStateOf(randomStart2)}
-    var taskNo3 = remember {mutableStateOf(randomStart3)}
-
-    var showAccept = remember {mutableStateOf(false)}
+    val acceptClicked = remember { mutableStateOf(false) }
+    val surpriseCheck = remember { mutableStateOf(false) }
+    val taskNo1  = remember {mutableStateOf(randomStart1)}
+    val taskNo2 = remember {mutableStateOf(randomStart2)}
+    val taskNo3 = remember {mutableStateOf(randomStart3)}
+    val showAccept = remember {mutableStateOf(false)}
 
 
     Column(
@@ -144,48 +158,49 @@ fun surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
         ) {
-            val context = LocalContext.current
-            Button(
-                onClick = {
-                    if (surpriseCheck.value) {
-                        surpriseCheck.value = false
-                    } else {
-                        surpriseCheck.value = true
-                    }
-                    showAccept.value = true
-                },
-                colors = ButtonDefaults.textButtonColors(backgroundColor = MediumYellow)
-            ) {
-                Text("Surprise Me!")
-            }
-            if(showAccept.value) {
-                Button(
+            Row  {
+                val context = LocalContext.current
+                FloatingActionButton(
                     onClick = {
-                        Toast.makeText(context, "Akzeptiert!", Toast.LENGTH_LONG).show()
-                        currentList.removeAll(completeList)
-                        if(change1.value){taskNo1.value--}
-                        if(change2.value){taskNo2.value--}
-                        if(change3.value){taskNo3.value--}
-
-                        Log.e("accept",taskNo1.value.toString() + taskNo2.value.toString() + taskNo3.value.toString())
-                        currentList.add(listofcat1[taskNo1.value % listofcat1.size])
-                        Log.e("list1", currentList.get(0).name)
-                        currentList.add(listofcat2[taskNo2.value % listofcat2.size])
-                        Log.e("list2", currentList.get(1).name)
-
-                        currentList.add(listofcat3[taskNo3.value % listofcat3.size])
-                        Log.e("list3", currentList.get(2).name)
-
-
-                        dailyList.removeAll(completeList)
-                        dailyList.addAll(currentList)
-                        dailyList.forEach{t ->Log.e("daily",t.name )}
+                        surpriseCheck.value = !surpriseCheck.value
+                        showAccept.value = true
                     },
-                    colors = ButtonDefaults.textButtonColors(backgroundColor = MediumPurple)
-                ) {
-                    Text("Accept")
+                    backgroundColor = Color(0xFFEE99A0),
+                    shape = CircleShape,
+                    content = { Icon(painter = painterResource(id = R.drawable.ic_celebration), contentDescription = "Surprise Icon")
+                    }
+                )
+                AnimatedVisibility(showAccept.value) {
+                    FloatingActionButton(
+                        onClick = {
+                            Toast.makeText(context, "Akzeptiert!", Toast.LENGTH_LONG).show()
+                            currentList.removeAll(completeList)
+                            if(change1.value){taskNo1.value--}
+                            if(change2.value){taskNo2.value--}
+                            if(change3.value){taskNo3.value--}
+
+                            Log.e("accept",taskNo1.value.toString() + taskNo2.value.toString() + taskNo3.value.toString())
+                            currentList.add(listofcat1[taskNo1.value % listofcat1.size])
+                            Log.e("list1", currentList.get(0).name)
+                            currentList.add(listofcat2[taskNo2.value % listofcat2.size])
+                            Log.e("list2", currentList.get(1).name)
+
+                            currentList.add(listofcat3[taskNo3.value % listofcat3.size])
+                            Log.e("list3", currentList.get(2).name)
+
+                            dailyList.removeAll(completeList)
+                            dailyList.addAll(currentList)
+                            dailyList.forEach{t ->Log.e("daily",t.name )}
+                        },
+                        backgroundColor = Color(0xFF7ECA9C),
+                        content = {
+                            Icon(painter = painterResource(id = R.drawable.ic_accept),contentDescription = "Accept Icon")
+                        }, modifier = Modifier.padding(horizontal = 10.dp),
+                        shape = CircleShape
+                    )
                 }
             }
+
         }
     }
 
@@ -201,11 +216,19 @@ fun surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
             Log.e("zufall",taskNo1.value.toString() + taskNo2.value.toString() + taskNo3.value.toString())
             lock.value = true
         }
-        Column {
-            surpriseTaskCard(listofcat1[taskNo1.value % listofcat1.size],listofcat1,taskNo1,change1)
-            surpriseTaskCard(listofcat2[taskNo2.value % listofcat2.size],listofcat2,taskNo2,change2)
-            surpriseTaskCard(listofcat3[taskNo3.value % listofcat3.size],listofcat3,taskNo3,change3)
-        }
+
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top=10.dp)) {
+                Text(text ="Sport", textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle2, fontStyle = FontStyle.Italic, modifier = Modifier.padding(bottom = 3.dp))
+                SurpriseTaskCard(listofcat1[taskNo1.value % listofcat1.size],listofcat1,taskNo1,change1)
+                Text(text = "Entspannung", textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle2, fontStyle = FontStyle.Italic, modifier = Modifier.padding(bottom = 3.dp))
+                SurpriseTaskCard(listofcat2[taskNo2.value % listofcat2.size],listofcat2,taskNo2,change2)
+                Text(text="Produktiv", textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle2, fontStyle = FontStyle.Italic, modifier = Modifier.padding(bottom = 3.dp))
+                SurpriseTaskCard(listofcat3[taskNo3.value % listofcat3.size],listofcat3,taskNo3,change3)
+                Text(text="Sport", textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle2, fontStyle = FontStyle.Italic, modifier = Modifier.padding(bottom = 3.dp))
+                SurpriseTaskCard(listofcat1[taskNo1.value % listofcat1.size],listofcat1,taskNo1,change1)
+            }
+
+
     }
 }
 

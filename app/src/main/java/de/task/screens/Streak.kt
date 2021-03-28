@@ -228,6 +228,14 @@ fun CompletedTaskCard(task: CompletedTask){
         5 -> pId = R.drawable.cooking2
         else -> pId = R.drawable.task
     }
+    val color: Color = when(taskId){
+        3 -> Color(0xFF74B49B) //green
+        5 -> Color(0xFFA4C5C6) //blue
+        2 -> Color(0xFF856C8B)  //purple
+        4 -> Color(0xFFF6D186) //yellow
+        1 -> Color(0xFFE97A7A)     //red
+        else -> MaterialTheme.colors.primary
+    }
 
     val clicked = remember { mutableStateOf(false) }
     Card(
@@ -238,7 +246,7 @@ fun CompletedTaskCard(task: CompletedTask){
             .clickable {
             },
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = MaterialTheme.colors.primaryVariant
+        backgroundColor = color
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -258,9 +266,9 @@ fun CompletedTaskCard(task: CompletedTask){
                     .padding(start = 10.dp)
             )
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp))
-                Text(text = "Dauer:  "+ task.duration + " Minuten", modifier = Modifier.padding(top = 6.dp))
-                Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp))
+                Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp), color = MaterialTheme.colors.onPrimary)
+                Text(text = "Dauer:  "+ task.duration + " Minuten", modifier = Modifier.padding(top = 6.dp), color = MaterialTheme.colors.onPrimary)
+                Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp), color = MaterialTheme.colors.onPrimary)
                 AnimatedVisibility(clicked.value) {
                     Text(
                         text = task.description,

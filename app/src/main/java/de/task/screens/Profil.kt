@@ -43,34 +43,43 @@ fun ProfileScreen(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskVi
 @Composable
 fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel, context: Context){
 
-
-
     val tabState = remember { mutableStateOf(0) }
 
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 10.dp), horizontalArrangement = Arrangement.SpaceEvenly){
-        Button(onClick = { tabState.value = 0} , colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryVariant), shape = CircleShape){
-            Text(text = "Stats")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp), horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(onClick = { tabState.value = 0 },
+                colors = ButtonDefaults.buttonColors(backgroundColor = colors.secondary),
+                shape = CircleShape) {
+                Text(text = "Stats")
+            }
+            Button(onClick = { tabState.value = 1 },
+                colors = ButtonDefaults.buttonColors(backgroundColor = colors.secondary),
+                shape = CircleShape) {
+                Text(text = "Settings")
+            }
+
         }
-        Button(onClick = { tabState.value = 1} , colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryVariant), shape = CircleShape){
-            Text(text = "Settings")
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
+        ) {
+            when (tabState.value) {
+                0 -> {
+                    Boxes(listCompletedTasks)
+                }
+                1 -> {
+                    SettingTab(taskViewModel, context)
+                }
+                else -> {
+                    Boxes(listCompletedTasks)
+                }
+            }
         }
 
-    }
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 10.dp)) {
-        when(tabState.value){
-            0 -> {
-                Boxes(listCompletedTasks)
-            }
-            1 -> { SettingTab(taskViewModel, context)}
-            else -> {
-                Boxes(listCompletedTasks)
-            }
-        }
-    }
 }
 
 
