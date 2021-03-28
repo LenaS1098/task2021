@@ -125,16 +125,23 @@ fun Surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
     val listofcat1: MutableList<Task> = completeList.filter { task -> task.categoryId ==1 } as MutableList<Task>
     val listofcat2:  MutableList<Task> = completeList.filter { task -> task.categoryId ==3 } as MutableList<Task>
     val listofcat3:  MutableList<Task> = completeList.filter { task -> task.categoryId ==4 } as MutableList<Task>
+    val listofcat4:  MutableList<Task> = completeList.filter { task -> task.categoryId ==5 } as MutableList<Task>
+
+
 
     val randomStart1 = (listofcat1.indices).random()
     val randomStart2 = (listofcat2.indices).random()
     val randomStart3 = (listofcat3.indices).random()
+    val randomStart4 = (listofcat3.indices).random()
+
 
     val lock = remember { mutableStateOf(false) }
 
     val change1 = remember { mutableStateOf(false) }
     val change2 = remember { mutableStateOf(false) }
     val change3 = remember { mutableStateOf(false) }
+    val change4 = remember { mutableStateOf(false) }
+
 
 
 
@@ -143,6 +150,8 @@ fun Surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
     val taskNo1  = remember {mutableStateOf(randomStart1)}
     val taskNo2 = remember {mutableStateOf(randomStart2)}
     val taskNo3 = remember {mutableStateOf(randomStart3)}
+    val taskNo4= remember {mutableStateOf(randomStart3)}
+
     val showAccept = remember {mutableStateOf(false)}
 
 
@@ -178,6 +187,8 @@ fun Surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
                             if(change1.value){taskNo1.value--}
                             if(change2.value){taskNo2.value--}
                             if(change3.value){taskNo3.value--}
+                            if(change4.value){taskNo4.value--}
+
 
                             Log.e("accept",taskNo1.value.toString() + taskNo2.value.toString() + taskNo3.value.toString())
                             currentList.add(listofcat1[taskNo1.value % listofcat1.size])
@@ -187,6 +198,10 @@ fun Surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
 
                             currentList.add(listofcat3[taskNo3.value % listofcat3.size])
                             Log.e("list3", currentList.get(2).name)
+
+                            currentList.add(listofcat4[taskNo4.value % listofcat4.size])
+                            Log.e("list4", currentList.get(3).name)
+
 
                             dailyList.removeAll(completeList)
                             dailyList.addAll(currentList)
@@ -213,6 +228,8 @@ fun Surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
             taskNo1.value += 1
             taskNo2.value += 1
             taskNo3.value += 1
+            taskNo4.value += 1
+
             Log.e("zufall",taskNo1.value.toString() + taskNo2.value.toString() + taskNo3.value.toString())
             lock.value = true
         }
@@ -224,8 +241,8 @@ fun Surprise(completeList: List<Task>, dailyList: MutableList<Task>, currentList
                 SurpriseTaskCard(listofcat2[taskNo2.value % listofcat2.size],listofcat2,taskNo2,change2)
                 Text(text="Produktiv", textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle2, fontStyle = FontStyle.Italic, modifier = Modifier.padding(bottom = 3.dp))
                 SurpriseTaskCard(listofcat3[taskNo3.value % listofcat3.size],listofcat3,taskNo3,change3)
-                Text(text="Sport", textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle2, fontStyle = FontStyle.Italic, modifier = Modifier.padding(bottom = 3.dp))
-                SurpriseTaskCard(listofcat1[taskNo1.value % listofcat1.size],listofcat1,taskNo1,change1)
+                Text(text="Kochen", textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle2, fontStyle = FontStyle.Italic, modifier = Modifier.padding(bottom = 3.dp))
+                SurpriseTaskCard(listofcat4[taskNo4.value % listofcat4.size],listofcat4,taskNo4,change4)
             }
 
 
