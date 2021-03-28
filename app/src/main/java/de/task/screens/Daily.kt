@@ -199,7 +199,7 @@ fun DummyCalendar(taskList: List<Task>, taskViewModel: TaskViewModel) {
                 2 -> "Irgendwas"
                 3 -> "Entspannung"
                 4 -> "Produktiv"
-                5 -> "Bla"
+                5 -> "Kochen"
                 else -> "Fehler"
             }
             Text(text =category, textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle2, fontStyle = FontStyle.Italic, modifier = Modifier.padding(bottom = 3.dp))
