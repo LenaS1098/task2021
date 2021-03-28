@@ -69,13 +69,13 @@ fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskView
         ) {
             when (tabState.value) {
                 0 -> {
-                    Boxes(listCompletedTasks)
+                    Boxes(taskViewModel)
                 }
                 1 -> {
                     SettingTab(taskViewModel, context)
                 }
                 else -> {
-                    Boxes(listCompletedTasks)
+                    Boxes(taskViewModel)
                 }
             }
         }

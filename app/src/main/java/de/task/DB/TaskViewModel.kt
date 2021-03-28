@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import java.time.LocalTime
@@ -20,7 +21,9 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
     val reminderTime = mutableStateOf(LocalTime.now())
 
-    val allCompletedTask: List<CompletedTask> = repository.allCompletedTask
+    var completedList = mutableListOf<CompletedTask>()
+
+    val getCompletedTask: List<CompletedTask> = repository.allCompletedTask
 
     val firstTask: String = repository.firstTask
 

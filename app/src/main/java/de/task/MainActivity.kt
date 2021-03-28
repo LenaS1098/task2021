@@ -160,12 +160,10 @@ class MainActivity : ComponentActivity() {
             taskViewModel.insert(chosenCompletedTask2)
             taskViewModel.insert(chosenCompletedTask1)*/
         }
-        val listOfCompletedTask: List<CompletedTask> = taskViewModel.allCompletedTask
-
-
+        val listOfCompletedTask: List<CompletedTask> = taskViewModel.getCompletedTask
 
         listOfTask.forEach { Log.e("DatabaseList?","diese Task heißt " + it.name) }
-        listOfCompletedTask.forEach { Log.e("DatabaseCompletedList?","diese Task heißt " + it.name) }
+      //  listOfCompletedTask.forEach { taskViewModel.completedTaskList.plus(it) }
 
 
 
@@ -215,11 +213,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks : List<CompletedTask>, taskViewModel: TaskViewModel) {
 
+
+    val completedList = remember{ mutableListOf<CompletedTask>() }
+    listCompletedTasks.forEach {
+        completedList.add(it)
+    }
+    taskViewModel.completedList = completedList
+
     val dailyTaskList = remember {mutableListOf<Task>()}
     val currentList = remember {mutableListOf<Task>()}
     Scaffold(bottomBar = {
-        BottomNavigation (modifier = Modifier.padding(horizontal = 7.dp, vertical = 10.dp ).clip(
-            RoundedCornerShape(15.dp)).border(2.dp,MaterialTheme.colors.primary, RoundedCornerShape(15.dp)), contentColor = MaterialTheme.colors.primaryVariant , backgroundColor = MaterialTheme.colors.background){
+        BottomNavigation (modifier = Modifier
+            .padding(horizontal = 7.dp, vertical = 10.dp)
+            .clip(
+                RoundedCornerShape(15.dp)
+            )
+            .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(15.dp)), contentColor = MaterialTheme.colors.primaryVariant , backgroundColor = MaterialTheme.colors.background){
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
             items.forEach { screen ->
@@ -239,11 +248,10 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
         }
     }) {
         NavHost(navController = navController, startDestination = Screen.Surprise.route, builder = {
-
-            composable(Screen.Streak.route){ CalenderTab(listComletedTasks = listCompletedTasks)}
+            composable(Screen.Streak.route){ CalenderTab(completedList,taskViewModel)}
             composable(Screen.Profil.route){ ProfileScreen(listCompletedTasks, taskViewModel, mGoogleSignInClient, context) }
             composable(Screen.Surprise.route){ Surprise(listOfTask, dailyTaskList,currentList)}
-            composable(Screen.Daily.route){ DummyCalendar(dailyTaskList,taskViewModel)}
+            composable(Screen.Daily.route){ DummyCalendar(dailyTaskList,taskViewModel, completedList)}
         })
     }
 }

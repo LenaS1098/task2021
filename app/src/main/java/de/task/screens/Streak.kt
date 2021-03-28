@@ -17,7 +17,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -43,6 +42,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.YearMonth
 import de.task.*
 import de.task.DB.CompletedTask
+import de.task.DB.TaskViewModel
 import de.task.R
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -53,15 +53,16 @@ import java.util.*
 
 @ExperimentalAnimationApi
 @Composable
-fun CalenderTab(listComletedTasks : List<CompletedTask>) {
+fun CalenderTab(completedList: List<CompletedTask>, taskViewModel: TaskViewModel) {
+
     Column {
-        CalenderTab1(listComletedTasks)
+        CalenderTab1(taskViewModel.completedList)
     }
 }
 
 @ExperimentalAnimationApi
 @Composable
-fun CalenderTab1(listComletedTasks : List<CompletedTask>){
+fun CalenderTab1(listComletedTasks: MutableList<CompletedTask>){
 
     val listDates = getListOfDates(listComletedTasks)
 
@@ -96,7 +97,7 @@ fun ShowTaskOfDay(listComletedTasks: List<CompletedTask>, date: CalposeDate ){
 @Composable
 fun CalendarStreak(
     monthFlow: MutableStateFlow<YearMonth>,
-    selectionSet: MutableStateFlow<Set<CalposeDate>>, listComletedTasks: List<CompletedTask>
+    selectionSet: MutableStateFlow<Set<CalposeDate>>, listComletedTasks: MutableList<CompletedTask>
 ) {
 
     val selections = selectionSet.collectAsState().value

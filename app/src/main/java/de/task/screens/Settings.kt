@@ -13,6 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +39,7 @@ import java.text.NumberFormat
 import java.time.LocalTime
 
 
+@ExperimentalAnimationApi
 @Composable
 fun SettingTab(taskViewModel: TaskViewModel, context: Context) {
     val darkModus = rememberSaveable { mutableStateOf(false) }
@@ -159,30 +162,43 @@ fun SettingTab(taskViewModel: TaskViewModel, context: Context) {
                         .padding(start = 15.dp)
                 ) {
 
-                    Checkbox(
-                        checked = reminder.value,
-                        modifier = Modifier.padding(start = 30.dp),
-                        onCheckedChange = { checkState ->
-                            if (checkState) {
-                                notificationIcon.value = reminderPainter
-                                timeDialog.show()
-                            } else {
-                                notificationIcon.value = noReminderPainter
-                                if (pendingIntent.value != null) {
-                                    cancelReminder(context, pendingIntent.value!!)
-                                }
+                    Column() {
+                        Checkbox(
+                            checked = reminder.value,
+                            modifier = Modifier.padding(start = 30.dp),
+                            onCheckedChange = { checkState ->
+                                if (checkState) {
+                                    notificationIcon.value = reminderPainter
+                                    timeDialog.show()
+                                } else {
+                                    notificationIcon.value = noReminderPainter
+                                    if (pendingIntent.value != null) {
+                                        cancelReminder(context, pendingIntent.value!!)
+                                    }
 
+                                }
+                                reminder.value = checkState
+                                taskViewModel.reminder.value = reminder.value
                             }
-                            reminder.value = checkState
-                            taskViewModel.reminder.value = reminder.value
+                        )
+                        AnimatedVisibility(visible = taskViewModel.reminder.value) {
+                            Text(
+                                text = timeState.value.toString(),
+                                fontStyle = FontStyle.Italic,
+                                modifier = Modifier.clickable {
+                                    timeDialog.show()
+                                }
+                                    .padding(start=10.dp)
+                            )
                         }
-                    )
+                    }
+
 
                 }
             }
         }
     }
-    if (taskViewModel.reminder.value) {
+ /*   if (taskViewModel.reminder.value) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -208,12 +224,7 @@ fun SettingTab(taskViewModel: TaskViewModel, context: Context) {
                             .weight(2f)
 
                     ) {
-                        Text(
-                            text = timeState.value.toString(),
-                            fontStyle = FontStyle.Italic,
-                            modifier = Modifier.clickable {
-                                timeDialog.show()
-                            }
+
 
                         )
 
@@ -223,7 +234,7 @@ fun SettingTab(taskViewModel: TaskViewModel, context: Context) {
                 }
             }
         }
-    }
+    }*/
 }
 
 

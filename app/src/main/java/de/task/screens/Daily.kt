@@ -1,8 +1,6 @@
 package de.task.screens
 
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -12,10 +10,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 
@@ -36,7 +32,6 @@ import de.task.DB.CompletedTask
 import de.task.DB.Task
 import de.task.DB.TaskViewModel
 import de.task.R
-import de.task.ui.theme.LightGreen
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -127,18 +122,26 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>, taskViewModel: T
                         }
                     }
                     currentList.value = newList
-                    taskViewModel.insert(
-                        CompletedTask(
-                            0,
-                            task.name,
-                            task.description,
-                            task.duration,
-                            task.categoryId,
-                            task.pictureId,
-                            LocalDate.now().toString(),
-                            LocalTime.now().toString()
-                        )
+                    val newCompTask = CompletedTask(
+                        0,
+                        task.name,
+                        task.description,
+                        task.duration,
+                        task.categoryId,
+                        task.pictureId,
+                        LocalDate.now().toString(),
+                        LocalTime.now().toString()
                     )
+                    taskViewModel.insert(newCompTask)
+                    val currentCompList : MutableList<CompletedTask> = taskViewModel.completedList
+                    val newCompList = mutableListOf<CompletedTask>()
+                    currentCompList.forEach {
+                        newCompList.add(it)
+                    }
+                    newCompList.add(newCompTask)
+                    taskViewModel.completedList = newCompList
+
+
                 },
                 backgroundColor = Color(0xFFD4EBD0),
                 content = {
@@ -178,11 +181,15 @@ fun Header() {
 @ExperimentalAnimationApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DummyCalendar(taskList: List<Task>, taskViewModel: TaskViewModel) {
+fun DummyCalendar(taskList: List<Task>, taskViewModel: TaskViewModel, completedList: List<CompletedTask>) {
 
 
     val currentList = remember {
         mutableStateOf(taskList)
+    }
+
+    val currentCompletedList = remember{
+        mutableStateOf(completedList)
     }
 
     LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {

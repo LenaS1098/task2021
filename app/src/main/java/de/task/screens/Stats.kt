@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 
 import de.task.DB.CompletedTask
 import de.task.DB.Task
+import de.task.DB.TaskViewModel
 import java.time.LocalDate
 
 
@@ -50,25 +51,22 @@ fun getStreak(listCompletedTasks: List<CompletedTask>): Int {
     var streak = 0
     val listDates = getListOfDates(listCompletedTasks)
     val first = listDates[listDates.size - 1]
-    if(listDates.size == 1){
 
-    }
-    if (first.isEqual(LocalDate.now()) || first.isEqual(LocalDate.now().minusDays(1))) {
-        streak = 1
-        for (i in listDates.size - 1 downTo 0) {
-            if (!listDates[i].isEqual(listDates[i - 1])) {
-                if (listDates[i].minusDays(1).isEqual(listDates[i - 1])) {
-                    streak++
-                    Log.e(
-                        "streak",
-                        "Date: ${listDates[i]} Counter: ${streak.toString()}"
-                    )
-                } else {
-                    return streak
+        if (first.isEqual(LocalDate.now()) || first.isEqual(LocalDate.now().minusDays(1))) {
+            streak = 1
+            if(listDates.size == 1){
+                return streak
+            }
+            for (i in listDates.size - 1 downTo 1) {
+                if (!listDates[i].isEqual(listDates[i - 1])) {
+                    if (listDates[i].minusDays(1).isEqual(listDates[i - 1])) {
+                        streak++
+                    } else {
+                        return streak
+                    }
                 }
             }
         }
-    }
     if (first.isEqual(LocalDate.now().minusDays(1))) {
         streak--
     }
@@ -111,7 +109,9 @@ fun getFavoriteCategorie(listCompletedTasks: List<CompletedTask>) :Pair<String,I
 
 
 @Composable
-fun Boxes(listCompletedTasks: List<CompletedTask>) {
+fun Boxes(taskViewModel: TaskViewModel) {
+
+    val listCompletedTasks = taskViewModel.completedList
 
     val green = Color(0xFF74B49B )
     val blue = Color(0xFFA4C5C6 )
