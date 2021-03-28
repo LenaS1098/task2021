@@ -1,26 +1,15 @@
 package de.task
 
-import android.annotation.SuppressLint
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.media.RingtoneManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
@@ -38,19 +27,19 @@ import de.task.screens.*
 
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
+import androidx.compose.ui.unit.dp
 import de.task.DB.Task
 import java.time.LocalDate
 import java.time.LocalTime
 import kotlin.random.Random
 
-object ThemeState{
-    var darkModeState : MutableState<Boolean> = mutableStateOf(false)
-}
 
 @ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
@@ -219,20 +208,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
- fun createNotificationChannel(context: Context) {
-    // Create the NotificationChannel, but only on API 26+ because
-    // the NotificationChannel class is new and not in the support library
 
-}
+
 
 @ExperimentalAnimationApi
 @Composable
 fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoogleSignInClient: GoogleSignInClient, context: Context, listOfTask: List<Task>, listCompletedTasks : List<CompletedTask>, taskViewModel: TaskViewModel) {
 
     val dailyTaskList = remember {mutableListOf<Task>()}
-    var currentList = remember {mutableListOf<Task>()}
+    val currentList = remember {mutableListOf<Task>()}
     Scaffold(bottomBar = {
-        BottomNavigation {
+        BottomNavigation (modifier = Modifier.padding(horizontal = 7.dp, vertical = 10.dp ).clip(
+            RoundedCornerShape(15.dp)).border(2.dp,MaterialTheme.colors.primary, RoundedCornerShape(15.dp)), contentColor = MaterialTheme.colors.primaryVariant , backgroundColor = MaterialTheme.colors.background){
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
             items.forEach { screen ->
@@ -245,7 +232,9 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
                             popUpTo = navController.graph.startDestination
                             launchSingleTop = true
                         }
-                    })
+                    },
+                    alwaysShowLabel = false
+                )
             }
         }
     }) {
@@ -253,7 +242,7 @@ fun BottomNavigation(navController: NavHostController, items: List<Screen>, mGoo
 
             composable(Screen.Streak.route){ CalenderTab(listComletedTasks = listCompletedTasks)}
             composable(Screen.Profil.route){ ProfileScreen(listCompletedTasks, taskViewModel, mGoogleSignInClient, context) }
-            composable(Screen.Surprise.route){ surprise(listOfTask, dailyTaskList,currentList)}
+            composable(Screen.Surprise.route){ Surprise(listOfTask, dailyTaskList,currentList)}
             composable(Screen.Daily.route){ DummyCalendar(dailyTaskList,taskViewModel)}
         })
     }

@@ -31,12 +31,13 @@ private val LightColorPalette = lightColors(
 
 private val LightColors = lightColors(
     primary = Purple500,
-    primaryVariant = MediumPurple,
-    secondary = MediumYellow,
+    primaryVariant = Color(0xFFA6B1E1),
+    secondary = Color(0xFFA7C5EB),
     secondaryVariant = LightYellow,
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White
+    background = LightWhite,
+    surface = Color(0xFFa7adba ),
+    onPrimary = Color.Black,
+    onSurface = Color.Black
 )
 
 private val DarkColors = darkColors(
@@ -44,8 +45,9 @@ private val DarkColors = darkColors(
     primaryVariant = MediumPurple,
     secondary = MediumYellow,
     secondaryVariant = LightYellow,
-    background = Color.Black,
-    surface = Color.Black
+    background = Color(0xFF202020 ),
+    surface = Color.Black,
+    onPrimary = Color.Black
 )
 
 

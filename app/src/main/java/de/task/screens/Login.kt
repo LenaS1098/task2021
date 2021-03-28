@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -89,7 +90,7 @@ fun LoginHeader(mGoogleSignInClient: GoogleSignInClient, context: Context){
                 }
             }
         }
-    Surface(color = MaterialTheme.colors.primary) {
+    Surface(color = MaterialTheme.colors.secondary) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
@@ -163,114 +164,3 @@ fun LoginHeader(mGoogleSignInClient: GoogleSignInClient, context: Context){
 
     }
 }
-/*
-
-@Composable
-fun loginScreen(mGoogleSignInClient: GoogleSignInClient, context: Context) {
-
-    //work around -> rememberSaveable speichert nicht bei neuaufrufen des Composable
-    var currentState: LoginState = LoginState.NONE
-    if(GoogleSignIn.getLastSignedInAccount(context) != null){
-        currentState = LoginState.LOGGED
-    }
-
-
-
-    var loginState by rememberSaveable{ mutableStateOf(currentState)}
-
-    var currentAccount: GoogleSignInAccount? = null
-
-    val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
-                val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
-                try {
-                    currentAccount = task.getResult(ApiException::class.java)
-                    loginState = LoginState.LOGGED
-                } catch (e: ApiException) {
-                    // The ApiException status code indicates the detailed failure reason.
-                    // Please refer to the GoogleSignInStatusCodes class reference for more information.
-                    Log.w("signInResult", "signInResult:failed code=" + e.statusCode)
-
-                }
-            }
-        }
-
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-
-    ) {
-
-        when (loginState) {
-            LoginState.NONE -> Button(
-                onClick = { startForResult.launch(mGoogleSignInClient.signInIntent) },
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .background(color = Color.Magenta)
-            ) {
-                Text(text = "Einloggen")
-            }
-            LoginState.LOGGING -> Text(text = "Logging", Modifier.padding(top = 8.dp))
-            LoginState.LOGGED -> {
-                currentAccount = GoogleSignIn.getLastSignedInAccount(context)
-                if (currentAccount!= null) {
-
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)) {
-                        Text(
-                            text = "User : " + currentAccount!!.displayName,
-                            Modifier.padding(top = 8.dp)
-                        )
-
-                        CoilImage(currentAccount!!.photoUrl.toString(),"eins beschreibung", loading = {
-                            Box(Modifier.matchParentSize()) {
-                                CircularProgressIndicator(Modifier.align(Alignment.Center))
-                            }
-                        })
-                    }
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)
-                ) {
-                    Button(
-                        onClick = {
-                            mGoogleSignInClient.signOut().addOnCompleteListener {
-                                loginState = LoginState.NONE
-                            }
-                        },
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .background(color = Color.Magenta)
-
-                    ) {
-                        Text(text = "User Ausloggen")
-                    }
-
-                    //Funktioniert noch net so ganz
-                    Button(
-                        onClick = {
-                            mGoogleSignInClient.revokeAccess().addOnCompleteListener {
-                                loginState = LoginState.NONE
-                            }
-                        },
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .background(color = Color.Magenta)
-
-                    ) {
-                        Text(text = "User entfernen")
-                    }
-                }
-            }
-        }
-
-    }
-}
-
-*/

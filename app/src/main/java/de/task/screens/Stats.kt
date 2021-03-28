@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontStyle
@@ -112,6 +113,13 @@ fun getFavoriteCategorie(listCompletedTasks: List<CompletedTask>) :Pair<String,I
 @Composable
 fun Boxes(listCompletedTasks: List<CompletedTask>) {
 
+    val green = Color(0xFF74B49B )
+    val blue = Color(0xFFA4C5C6 )
+    val purple = Color(0xFF856C8B)
+    val yellow = Color(0xFFF6D186 )
+    val red = Color(0xFFE97A7A )
+
+
     val isEmpty = remember { mutableStateOf(listCompletedTasks.isEmpty()) }
     Spacer(modifier = Modifier.padding(15.dp))
     if (isEmpty.value) {
@@ -132,11 +140,13 @@ fun Boxes(listCompletedTasks: List<CompletedTask>) {
                     .clip(
                         RoundedCornerShape(10.dp)
                     ),
-                contentColor = MaterialTheme.colors.onPrimary,
-                backgroundColor = MaterialTheme.colors.primary
+                contentColor = MaterialTheme.colors.onSecondary,
+                backgroundColor = red
+
             )
             {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spacer(modifier = Modifier.padding(4.dp))
                     Text(
                         textAlign = TextAlign.Center,
                         text = "Streak",
@@ -169,8 +179,8 @@ fun Boxes(listCompletedTasks: List<CompletedTask>) {
                     .clip(
                         RoundedCornerShape(10.dp)
                     ),
-                contentColor = MaterialTheme.colors.onPrimary,
-                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onSecondary,
+                backgroundColor = green,
 
                 )
             {
@@ -179,6 +189,7 @@ fun Boxes(listCompletedTasks: List<CompletedTask>) {
                     totalDuration += it.duration
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spacer(modifier = Modifier.padding(4.dp))
                     Text(
                         textAlign = TextAlign.Center,
                         text = "Total Duration",
@@ -217,11 +228,12 @@ fun Boxes(listCompletedTasks: List<CompletedTask>) {
                     .clip(
                         RoundedCornerShape(10.dp)
                     ),
-                contentColor = MaterialTheme.colors.onPrimary,
-                backgroundColor = MaterialTheme.colors.primary
+                contentColor = MaterialTheme.colors.onSecondary,
+                backgroundColor = yellow
             )
             {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spacer(modifier = Modifier.padding(4.dp))
                     Text(
                         textAlign = TextAlign.Center,
                         text = "Total Tasks",
@@ -251,11 +263,12 @@ fun Boxes(listCompletedTasks: List<CompletedTask>) {
                     .clip(
                         RoundedCornerShape(10.dp)
                     ),
-                contentColor = MaterialTheme.colors.onPrimary,
-                backgroundColor = MaterialTheme.colors.primary
+                contentColor = MaterialTheme.colors.onSecondary,
+                backgroundColor = blue
             )
             {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spacer(modifier = Modifier.padding(4.dp))
                     Text(
                         textAlign = TextAlign.Center,
                         text = "Favorite Categorie",
