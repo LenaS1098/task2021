@@ -2,6 +2,7 @@ package de.task.screens
 import de.task.*
 
 import android.content.Context
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -30,6 +32,7 @@ import de.task.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.YearMonth
 
+@ExperimentalAnimationApi
 @Composable
 fun ProfileScreen(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel, mGoogleSignInClient: GoogleSignInClient, context: Context){
     Column() {
@@ -40,6 +43,7 @@ fun ProfileScreen(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskVi
 }
 
 
+@ExperimentalAnimationApi
 @Composable
 fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskViewModel, context: Context){
 
@@ -53,12 +57,12 @@ fun PageContent(listCompletedTasks: List<CompletedTask>, taskViewModel: TaskView
             Button(onClick = { tabState.value = 0 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = colors.secondary),
                 shape = CircleShape) {
-                Text(text = "Stats")
+                Text(text = "Stats", color = Color.Black)
             }
             Button(onClick = { tabState.value = 1 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = colors.secondary),
                 shape = CircleShape) {
-                Text(text = "Settings")
+                Text(text = "Settings", color = Color.Black)
             }
 
         }

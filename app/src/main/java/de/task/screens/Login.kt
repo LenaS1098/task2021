@@ -150,11 +150,11 @@ fun LoginHeader(mGoogleSignInClient: GoogleSignInClient, context: Context){
                         mGoogleSignInClient.signOut().addOnCompleteListener {
                             loginState = LoginState.NONE
                         }
-                    })
+                    }, tint = Color.Black)
                 }else{
                     Icon(painter = painterResource(id = R.drawable.ic_login),"icon", Modifier.clickable {
                         startForResult.launch(mGoogleSignInClient.signInIntent)
-                    })
+                    }, tint = Color.Black)
                 }
 
             }

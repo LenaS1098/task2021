@@ -158,7 +158,7 @@ fun CalendarStreak(
                         style = TextStyle(
                             color = when {
                                 isSelected -> Color.White
-                                else -> Color.Black
+                                else -> MaterialTheme.colors.onSecondary
                             },
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                         )
@@ -269,7 +269,6 @@ fun CompletedTaskCard(task: CompletedTask){
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                 Text(text = task.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp), color = MaterialTheme.colors.onPrimary)
                 Text(text = "Dauer:  "+ task.duration + " Minuten", modifier = Modifier.padding(top = 6.dp), color = MaterialTheme.colors.onPrimary)
-                Text(text = "Kategorie:  ${task.categoryId}", modifier = Modifier.padding(top = 4.dp), color = MaterialTheme.colors.onPrimary)
                 AnimatedVisibility(clicked.value) {
                     Text(
                         text = task.description,

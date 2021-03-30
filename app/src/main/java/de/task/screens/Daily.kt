@@ -84,7 +84,6 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>, taskViewModel: T
                 }
         ) {
             Image(
-
                 bitmap = ImageBitmap.imageResource(id = pId),
                 contentDescription = "TaskImage",
                 modifier = Modifier
@@ -101,11 +100,6 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>, taskViewModel: T
                 Text(
                     text = "Dauer:  " + task.duration + " Minuten",
                     modifier = Modifier.padding(top = 6.dp),
-                    color = MaterialTheme.colors.onPrimary
-                )
-                Text(
-                    text = "Kategorie:  ${task.categoryId}",
-                    modifier = Modifier.padding(top = 4.dp, end = 4.dp),
                     color = MaterialTheme.colors.onPrimary
                 )
                 AnimatedVisibility(visible = clicked.value) {
@@ -143,7 +137,6 @@ fun TaskCard(task: Task, currentList: MutableState<List<Task>>, taskViewModel: T
                     }
                     newCompList.add(newCompTask)
                     taskViewModel.completedList = newCompList
-
 
                 },
                 backgroundColor = Color(0xFFD4EBD0),

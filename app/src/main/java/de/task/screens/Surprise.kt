@@ -96,7 +96,6 @@ fun SurpriseTaskCard(
             ) {
                 Text(text = thisCardTask.value.name, fontSize = 24.sp, modifier = Modifier.padding(top = 10.dp), color = MaterialTheme.colors.onPrimary)
                 Text(text = "Dauer:  "+ thisCardTask.value.duration + " Minuten", modifier = Modifier.padding(top = 6.dp), color = MaterialTheme.colors.onPrimary)
-                Text(text = "Kategorie:  ${thisCardTask.value.categoryId}", modifier = Modifier.padding(top = 4.dp), color = MaterialTheme.colors.onPrimary)
                 if(clicked.value)
                     Text(text = task.description, modifier = Modifier.padding(top = 10.dp), fontStyle = FontStyle.Italic, color = MaterialTheme.colors.onPrimary)
             }

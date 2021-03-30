@@ -45,7 +45,7 @@ class Receiver(): BroadcastReceiver() {
 
 
             val builder = NotificationCompat.Builder(context, R.string.channelId.toString())
-                .setSmallIcon(R.drawable.backicon)
+                .setSmallIcon(R.drawable.task)
                 .setContentTitle("task")
                 .setContentText(intent!!.getStringExtra("text"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

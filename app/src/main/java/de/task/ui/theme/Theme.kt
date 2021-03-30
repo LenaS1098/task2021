@@ -37,7 +37,8 @@ private val LightColors = lightColors(
     background = LightWhite,
     surface = Color(0xFFa7adba ),
     onPrimary = Color.Black,
-    onSurface = Color.Black
+    onSurface = Color.Black,
+    onSecondary = Color.Black
 )
 
 private val DarkColors = darkColors(
@@ -47,7 +48,8 @@ private val DarkColors = darkColors(
     secondaryVariant = LightYellow,
     background = Color(0xFF202020 ),
     surface = Color.Black,
-    onPrimary = Color.Black
+    onPrimary = Color.Black,
+    onSecondary = Color.White
 )
 
 
